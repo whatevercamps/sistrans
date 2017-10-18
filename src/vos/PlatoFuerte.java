@@ -12,7 +12,11 @@ package vos;
 
 import java.util.List;
 import org.codehaus.jackson.annotate.*;
-
+/**
+ * Clase que contiene la información de un Plato Fuerte.
+ * @author jc.corrales
+ *
+ */
 public class PlatoFuerte extends Producto
 {
 	/**
@@ -24,15 +28,15 @@ public class PlatoFuerte extends Producto
 
 	/**
 	 * Método constructo de la clase PlatoFuerteVos.
-	 * @param acompaniamientos
-	 * @param id
-	 * @param nombre
-	 * @param costoDeProduccion
-	 * @param descripcionEspaniol
-	 * @param descripcionIngles
-	 * @param idProductosEquivalentes
-	 * @param precio
-	 * @param tiposComida
+	 * @param acompaniamientosList<Entrada>
+	 * @param id Long
+	 * @param nombre String
+	 * @param costoDeProduccion Double
+	 * @param descripcionEspaniol String
+	 * @param descripcionIngles String
+	 * @param idProductosEquivalentes List<ProductoBase>
+	 * @param precio Double
+	 * @param tiposComida List<TipoComida>
 	 */
 	public PlatoFuerte(@JsonProperty(value="acompaniamientos")List<Entrada> acompaniamientos,
 			@JsonProperty(value="id")Long id, @JsonProperty(value="nombre")String nombre, 

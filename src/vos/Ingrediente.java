@@ -66,11 +66,17 @@ public class Ingrediente extends IngredienteBase{
 	public void setdescription(String description) {
 		this.description= description;
 	}
-
+	/**
+	 * Método que obtiene los Ingredientes equivalentes a este.
+	 * @return Collection<IngredienteBase>, Ingredientes equivalentes.
+	 */
 	public Collection<IngredienteBase> getIngredientesEquivalentes(){
 		return ingredientesEquivalentes;
 	}
-	
+	/**
+	 * Método que establece los Ingredientes equivalentes a este.
+	 * @param ingredientes Collection<IngredienteBase>, nuevos Ingredientes equivalentes a este.
+	 */
 	public void setIngredientesEquivalentes(Collection<IngredienteBase> ingredientes) {
 		this.ingredientesEquivalentes = ingredientes;
 	}

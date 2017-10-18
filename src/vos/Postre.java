@@ -67,10 +67,5 @@ public class Postre extends Producto{
 	 */
 	public void setEsCaliente(Collection<Sabor> sabores) {
 		this.sabores = sabores;
-	}
-	
-	
-	
-	
-	
+	}	
 }

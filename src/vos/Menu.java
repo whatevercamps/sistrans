@@ -39,26 +39,39 @@ public class Menu{
 	 */
 	@JsonProperty(value="costoProduccion")
 	private Double costoProduccion;
-
+	/**
+	 * Atributo que contiene la descripción en español de este Menú.
+	 */
 	@JsonProperty(value="descripcion")
 	private String descripcion;
-
+	/**
+	 * Atributo que contiene la descripción en inglés de este Menú.
+	 */
 	@JsonProperty(value="description")
 	private String description;
-
-
+	/**
+	 * Atributo que contiene el precio de este Menú.
+	 */
 	@JsonProperty(value="precio")
 	private Double precio;
-
+	/**
+	 * Atributo que contiene la Entrada de este Menú.
+	 */
 	@JsonProperty(value="entrada")
 	private Entrada entrada; 
-
+	/**
+	 * Atributo que contiene el Plato Fuerte de este Menú.
+	 */
 	@JsonProperty(value="platoFuerte")
 	private PlatoFuerte platoFuerte;
-
+	/**
+	 * Atributo que contiene el Postre de este Menú.
+	 */
 	@JsonProperty(value="postre")
 	private Postre postre;
-
+	/**
+	 * Atributo que contiene la Bebida de este Menú.
+	 */
 	@JsonProperty(value="bebida")
 	private Bebida bebida;
 
@@ -162,52 +175,87 @@ public class Menu{
 	public void setdescription(String description) {
 		this.description= description;
 	}
-
-
-	public Double getPrecion() {
+	/**
+	 * Método que obtiene el Precio de este Menú.
+	 * @return Double, Precio de este Menú.
+	 */
+	public Double getPrecio() {
 		return precio;
 	}
-
+	/**
+	 * Método que establece el Precio de este Menú.
+	 * @param precio Double, nuevo Precio de este Menú.
+	 */
 	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
-
+	/**
+	 * Método que obtiene el Costo de Producción de este Menú.
+	 * @return Double, Costo de Producción de este Menú.
+	 */
 	public Double getCostoProduccion() {
 		return costoProduccion;
 	}
-
+	/**
+	 * Método que establece el costo de producción de este Menú.
+	 * @param costoProduccion Double, nuevo costo de producción de este Menú.
+	 */
 	public void setCostoProduccion(Double costoProduccion) {
 		this.costoProduccion = costoProduccion;
 	}
-	
+	/**
+	 * Método que obtiene la Entrada de este Menú.
+	 * @return Entrada, Entrada de este Menú.
+	 */
 	public Entrada getEntrada() {
 		return entrada;
 	}
-	
+	/**
+	 * Método que establece la Entrada de este Menú.
+	 * @param entrada Entrada, nueva Entrada de este Menú.
+	 */
 	public void setEntrada(Entrada entrada) {
 		this.entrada = entrada;
 	}
-	
+	/**
+	 * Método que obtiene el Plato Fuerte de este Menú.
+	 * @return PlatoFuerte, Plato Fuerte de este Menú.
+	 */
 	public PlatoFuerte getPlatoFuerte() {
 		return platoFuerte;
 	}
-
+	/**
+	 * Método que establece el Plato Fuerte de este Menú.
+	 * @param platoFuerte PlatoFuerte, nuevo PlatoFuerte de este Menú.
+	 */
 	public void setPlatoFuerte(PlatoFuerte platoFuerte) {
 		this.platoFuerte = platoFuerte;
 	}
-	
+	/**
+	 * Método que obtiene el Postre de este Menú.
+	 * @return Postre, Postre de este Menú.
+	 */
 	public Postre getPostre() {
 		return postre;
 	}
-	
+	/**
+	 * Método que establece el Postre de este Menú.
+	 * @param postre Postre, nuevo postre de este Menú.
+	 */
 	public void setPostre(Postre postre) {
 		this.postre = postre;
 	}
-	
+	/**
+	 * Método que obtiene la Bebida de este Menú.
+	 * @return Bebida, Bebida de este Menú.
+	 */
 	public Bebida getBebida() {
 		return bebida;
 	}
-	
+	/**
+	 * Método que establece la Bebida de este Menú.
+	 * @param bebida Bebida, nueva Bebida de este Menú.
+	 */
 	public void setBebida(Bebida bebida) {
 		this.bebida = bebida;
 	}
