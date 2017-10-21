@@ -29,15 +29,13 @@ public class ClienteFrecuente extends Cliente
 	@JsonProperty(value = "productosPreSeleccionados")
 	private List<Producto> preferencias;
 	
-	
 	/**
-	 * Método Constructor de la clase ClienteFrecuenteVos.
-	 * @param contrasenia
-	 * @param id
-	 * @param mesa
-	 * @param nombre
-	 * @param nPersonas
-	 * @param numeroTarjetaCredito
+	 * Método Constructor de la clase ClienteFrecuente.
+	 * @param productosPreSeleccionados List<Producto> Lista de productos preseleccionados de este cliente.
+	 * @param contrasenia String, contraseña del cliente.
+	 * @param id Long, ID del cliente.
+	 * @param mesa Integer, número de la mesa de este cliente.
+	 * @param nombre String, nombre del cliente.
 	 */
 	public ClienteFrecuente(@JsonProperty(value = "productosPreSeleccionados")List<Producto> productosPreSeleccionados, @JsonProperty(value="contrasenia")String contrasenia,@JsonProperty(value="id")Long id, @JsonProperty(value = "mesa")Integer mesa, @JsonProperty(value = "nombre")String nombre)
 	{

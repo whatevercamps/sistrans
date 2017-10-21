@@ -20,14 +20,30 @@ public class Representante {
 	@JsonProperty(value="name")
 	private String name;
 	/**
+	 * Atributo que contiene la contraseña de este representante.
+	 */
+	@JsonProperty(value = "contrasenia")
+	private String contrasenia;
+	/**
+	 * Atributo que contiene el Restaurante.
+	 */
+	@JsonProperty(value = "restaurante")
+	private Restaurante restaurante;
+	/**
 	 * Método constructor de la Clase Representante.
 	 * @param id Long
 	 * @param name String
 	 */
-	public Representante(@JsonProperty(value="id")Long id, @JsonProperty(value="name")String name) {
+	public Representante(
+			@JsonProperty(value="id")Long id,
+			@JsonProperty(value="name")String name,
+			@JsonProperty(value="contrasenia")String contrasenia
+			)
+	{
 		super();
 		this.id = id;
 		this.name = name;
+		this.contrasenia = contrasenia;
 	}
 	/**
 	 * Método que obtiene el ID de un Representante.
@@ -56,5 +72,37 @@ public class Representante {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * Método que obtiene la contraseña de este Representante.
+	 * @return String, contraseña del representante.
+	 */
+	public String getContrasenia()
+	{
+		return contrasenia;
+	}
+	/**
+	 * Método que establece la contraseña de este representante.
+	 * @param contrasenia, nueva contraseña del representante.
+	 */
+	public void setContrasenia(String contrasenia)
+	{
+		this.contrasenia = contrasenia;
+	}
+	/**
+	 * Método que obtiene el Restaurante que este Representante representa.
+	 * @return Restaurante, Restaurante que este Representante representa.
+	 */
+	public Restaurante getRestaurante()
+	{
+		return restaurante;
+	}
+	/**
+	 * Método que establece el Restaurante que este Representante representa.
+	 * @param restaurante Restaurante, nuevo Restaurante que este Representante representa.
+	 */
+	public void setRestaurante(Restaurante restaurante)
+	{
+		this.restaurante = restaurante;
 	}
 }

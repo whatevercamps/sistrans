@@ -58,22 +58,22 @@ public class Menu{
 	 * Atributo que contiene la Entrada de este Menú.
 	 */
 	@JsonProperty(value="entrada")
-	private Entrada entrada; 
+	private Producto entrada; 
 	/**
 	 * Atributo que contiene el Plato Fuerte de este Menú.
 	 */
 	@JsonProperty(value="platoFuerte")
-	private PlatoFuerte platoFuerte;
+	private Producto platoFuerte;
 	/**
 	 * Atributo que contiene el Postre de este Menú.
 	 */
 	@JsonProperty(value="postre")
-	private Postre postre;
+	private Producto postre;
 	/**
 	 * Atributo que contiene la Bebida de este Menú.
 	 */
 	@JsonProperty(value="bebida")
-	private Bebida bebida;
+	private Producto bebida;
 
 
 	/**
@@ -89,10 +89,10 @@ public class Menu{
 			@JsonProperty(value="descripcion") String descripcion, 
 			@JsonProperty(value = "description") String description, 
 			@JsonProperty(value = "precio") Double precio,
-			@JsonProperty(value="entrada") Entrada entrada,
-			@JsonProperty(value="platoFuerte") PlatoFuerte platoFuerte,
-			@JsonProperty(value="bebida") Bebida bebida,
-			@JsonProperty(value="postre") Postre postre){
+			@JsonProperty(value="entrada") Producto entrada,
+			@JsonProperty(value="platoFuerte") Producto platoFuerte,
+			@JsonProperty(value="bebida") Producto bebida,
+			@JsonProperty(value="postre") Producto postre){
 		super();
 		this.id = id;
 		this.name = name;
@@ -207,56 +207,56 @@ public class Menu{
 	 * Método que obtiene la Entrada de este Menú.
 	 * @return Entrada, Entrada de este Menú.
 	 */
-	public Entrada getEntrada() {
+	public Producto getEntrada() {
 		return entrada;
 	}
 	/**
 	 * Método que establece la Entrada de este Menú.
 	 * @param entrada Entrada, nueva Entrada de este Menú.
 	 */
-	public void setEntrada(Entrada entrada) {
+	public void setEntrada(Producto entrada) {
 		this.entrada = entrada;
 	}
 	/**
 	 * Método que obtiene el Plato Fuerte de este Menú.
 	 * @return PlatoFuerte, Plato Fuerte de este Menú.
 	 */
-	public PlatoFuerte getPlatoFuerte() {
+	public Producto getPlatoFuerte() {
 		return platoFuerte;
 	}
 	/**
 	 * Método que establece el Plato Fuerte de este Menú.
 	 * @param platoFuerte PlatoFuerte, nuevo PlatoFuerte de este Menú.
 	 */
-	public void setPlatoFuerte(PlatoFuerte platoFuerte) {
+	public void setPlatoFuerte(Producto platoFuerte) {
 		this.platoFuerte = platoFuerte;
 	}
 	/**
 	 * Método que obtiene el Postre de este Menú.
 	 * @return Postre, Postre de este Menú.
 	 */
-	public Postre getPostre() {
+	public Producto getPostre() {
 		return postre;
 	}
 	/**
 	 * Método que establece el Postre de este Menú.
 	 * @param postre Postre, nuevo postre de este Menú.
 	 */
-	public void setPostre(Postre postre) {
+	public void setPostre(Producto postre) {
 		this.postre = postre;
 	}
 	/**
 	 * Método que obtiene la Bebida de este Menú.
 	 * @return Bebida, Bebida de este Menú.
 	 */
-	public Bebida getBebida() {
+	public Producto getBebida() {
 		return bebida;
 	}
 	/**
 	 * Método que establece la Bebida de este Menú.
 	 * @param bebida Bebida, nueva Bebida de este Menú.
 	 */
-	public void setBebida(Bebida bebida) {
+	public void setBebida(Producto bebida) {
 		this.bebida = bebida;
 	}
 }
