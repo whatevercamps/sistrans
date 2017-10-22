@@ -1,11 +1,9 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import vos.Producto;
 public class DAOTablaPedidos {
 	private ArrayList<Object> recursos;
 	private Connection conn;
-	private DAOTablaClientes daoClientes; 
 
 
 	public DAOTablaPedidos() {
@@ -52,7 +49,9 @@ public class DAOTablaPedidos {
 		return 0L;
 	}
 
-
+	
+	
+	
 
 	public Pedido registrarPedido(Cliente cliente, Producto producto) throws SQLException, Exception{
 		Long id =  darIdMax();	

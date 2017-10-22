@@ -1,5 +1,6 @@
 package vos;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * Clase que contiene la información de RotondAndes
@@ -7,6 +8,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  *
  */
 public class RotondAndes {
+	public static final String[] categoria = {"ENTRADA", "BEBIDA", "POSTRE", "PLATOFUERTE", "ACOMPANIAMIENTO"};
 	/**
 	 * Id de rotondAndes
 	 */

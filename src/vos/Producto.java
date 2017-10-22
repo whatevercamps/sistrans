@@ -27,14 +27,7 @@ public class Producto extends ProductoBase
 	/**
 	 * Descripcion en español del producto.
 	 */
-	@JsonProperty(value = "descripcionEspaniol")
-	private String descripcionEspaniol;
-	
-	/**
-	 * Descripcion en Inglés del producto.
-	 */
-	@JsonProperty(value = "descripcionIngles")
-	private String descripcionIngles;
+
 	/**
 	 * Atributo que contiene los IDs de los productos equivalentes.
 	 */
@@ -67,19 +60,24 @@ public class Producto extends ProductoBase
 		super();
 	}
 	
-	public Producto(Long id, String nombre, Double costoDeProduccion,String descripcionEspaniol, String descripcionIngles, List<ProductoBase> productosEquivalentes, Double precio, List<TipoComida> tiposComida){
-		super(id, nombre);
+	public Producto(@JsonProperty(value = "id")Long id, 
+			@JsonProperty(value = "nombre") String nombre, 
+			@JsonProperty(value = "descripcionEspaniol")String descripcionEspaniol,
+			@JsonProperty(value = "descripcionIngles")String descripcionIngles,
+			@JsonProperty(value = "costo_prod") Double costoDeProduccion, 
+			@JsonProperty(value = "productos_equivalentes") List<ProductoBase> productosEquivalentes, 
+			@JsonProperty(value = "precio") Double precio, 
+			@JsonProperty(value = "tipos") List<TipoComida> tiposComida,
+			@JsonProperty(value = "categoria") Integer categoria){
+		
+		super(id, nombre, descripcionEspaniol, descripcionIngles, categoria);
 		this.costoDeProduccion = costoDeProduccion;
-		this.descripcionEspaniol = descripcionEspaniol;
-		this.descripcionIngles = descripcionIngles;
 		this.productosEquivalentes = productosEquivalentes;
 		this.precio = precio;
 		this.tiposComida = tiposComida;
 		
 	}
 	
-
-
 	/**
 	 * Método que obtiene el costo de producción.
 	 * @return Double, Costo de producción de este Producto.
@@ -95,38 +93,6 @@ public class Producto extends ProductoBase
 	public void setCostoDeProduccion(Double costoDeProduccion)
 	{
 		this.costoDeProduccion = costoDeProduccion;
-	}
-	/**
-	 * Método que obtiene la descripción de este producto en español.
-	 * @return String, descripción del producto en español.
-	 */
-	public String getDescripcionEspaniol()
-	{
-		return this.descripcionEspaniol;
-	}
-	/**
-	 * Método que establece la descripción de este producto en español.
-	 * @param descripcionEspaniol String, Nueva descripción del producto en español.
-	 */
-	public void setDescripcionEspaniol(String descripcionEspaniol)
-	{
-		this.descripcionEspaniol = descripcionEspaniol;
-	}
-	/**
-	 * Método que obtiene la descripción de este producto en ingles.
-	 * @return String, descripción del producto en español.
-	 */
-	public String getDescripcionIngles()
-	{
-		return this.descripcionIngles;
-	}
-	/**
-	 * Método que establece la descripción de este producto en español.
-	 * @param descripcionEspaniol String, Nueva descripción del producto en ingles.
-	 */
-	public void setDescripcionIngles(String descripcionIngles)
-	{
-		this.descripcionIngles = descripcionIngles;
 	}
 	/**
 	 * Método que obtiene el precio de este producto.

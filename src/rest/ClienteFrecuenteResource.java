@@ -24,19 +24,19 @@ import vos.Cliente;
 import vos.ClienteFrecuente;
 @Path("clientes-frecuentes")
 public class ClienteFrecuenteResource {
-	
-	
+
+
 	@XmlRootElement
 	public static class RequestBody {
-	    @XmlElement String password;
-	    @XmlElement Long idProd;
-	    @XmlElement Long idProdPasado;
+		@XmlElement String password;
+		@XmlElement Long idProd;
+		@XmlElement Long idProdPasado;
 	}
-	
+
 	@Context
 	private ServletContext context;
-	
-	
+
+
 	@POST
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
@@ -50,9 +50,8 @@ public class ClienteFrecuenteResource {
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-				
 	}
-	
+
 	@DELETE
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
@@ -67,7 +66,7 @@ public class ClienteFrecuenteResource {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 	@PUT
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
@@ -83,15 +82,15 @@ public class ClienteFrecuenteResource {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
-	
+
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}";
 	}
 
-	
-	
+
+
 }

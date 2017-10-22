@@ -37,6 +37,7 @@ public class ClienteResorce {
 	@XmlRootElement
 	public static class RequestBody {
 	    @XmlElement Long idProd;
+	    @XmlElement Long idRestProd;
 	}
 	
 	
@@ -88,7 +89,7 @@ public class ClienteResorce {
 	public Response agregarPedido(@PathParam("id") Long id, RequestBody request) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			Pedido pedido = tm.agregarPedido(id, request.idProd);
+			Pedido pedido = tm.agregarPedido(id, request.idProd, request.idRestProd);
 			 
 			return Response.status( 200 ).entity( pedido ).build();	
 		}catch( Exception e )
@@ -97,19 +98,6 @@ public class ClienteResorce {
 		}
 	}
 	
-	@GET
-	@Path("{id: \\d+}/productos")
-	@Produces({MediaType.APPLICATION_JSON})
-	public Response getProductos() {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Producto> productos;
-		try {
-			productos = tm.darProductos();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(productos).build();
-		
-	}
+	
 	
 }

@@ -15,8 +15,6 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,9 +22,7 @@ import dao.DAOTablaClientes;
 import dao.DAOTablaClientesFrecuentes;
 import dao.DAOTablaPedidos;
 import dao.DAOTablaProductos;
-import vos.Bebida;
 import vos.Cliente;
-import vos.ClienteFrecuente;
 import vos.Pedido;
 import vos.Producto;
 
@@ -181,15 +177,15 @@ public class RotondAndesTM {
 		}
 		return res;
 	}
-
-	public Producto darProducto(Long id) throws SQLException, Exception {
+	
+	public Producto darProducto(Long id, Long idRest) throws SQLException, Exception {
 		Producto res;
 		DAOTablaProductos dao = new DAOTablaProductos(); 
 		try {
 			this.conn = darConexion();
 			dao.setConn(conn);
-			res = dao.darProducto(id);
-			
+			res = dao.darProducto(id, idRest);
+
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -211,9 +207,9 @@ public class RotondAndesTM {
 		}
 		return res;
 	}
-	
-	
-	
+	 
+
+
 	public void borrarPreferenciaClienteFrecuente(Long id, String password, Long idProd) throws SQLException, Exception {
 		DAOTablaClientesFrecuentes dao = new DAOTablaClientesFrecuentes();
 		try {
@@ -270,14 +266,14 @@ public class RotondAndesTM {
 		}
 	}
 
-	public Pedido agregarPedido(Long id, Long idProd) throws SQLException, Exception {
+	public Pedido agregarPedido(Long id, Long idProd, Long idRestProd) throws SQLException, Exception {
 		Pedido res = null;
 		DAOTablaPedidos dao = new DAOTablaPedidos();
 		try {
 			this.conn = darConexion();
 			dao.setConn(conn);
 			Cliente cliente = darCliente(id);
-			Producto producto = darProducto(idProd);
+			Producto producto = darProducto(idProd, idRestProd);
 			res = dao.registrarPedido(cliente, producto);
 			return res;
 		}catch (SQLException e) {
@@ -299,7 +295,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-		
+
 
 	}
 
@@ -329,7 +325,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-		
+
 	}
 
 	public List<Producto> darProductos() throws SQLException, Exception {
@@ -340,6 +336,36 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			dao.setConn(conn);
 			productos = dao.darProductos();
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos; 
+	}
+
+	public List<Producto> darProductosPor(Integer filtro, Object parametro)  throws SQLException, Exception {
+		List<Producto> productos; 
+		DAOTablaProductos dao = new DAOTablaProductos();
+
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);
+			productos = dao.darProductosPor(filtro, parametro);
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();

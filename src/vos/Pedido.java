@@ -26,21 +26,19 @@ public class Pedido {
 	 */
 	@JsonProperty(value = "fecha")
 	private LocalDateTime fecha;
+	
 	/**
 	 * Atributo que contiene si este pedido ya ha sido servido o no.
 	 */
 	@JsonProperty(value = "servido")
 	private Boolean servido;
+	
 	/**
 	 * Atributo que contiene la orden a la que está asociada este pedido.
 	 */
 	@JsonProperty(value = "orden")
 	private Orden orden;
-	/**
-	 * Atributo que contiene el restaurante asignado a este pedido.
-	 */
-	@JsonProperty(value = "restaurante")
-	private Restaurante restaurante;
+	
 	/**
 	 * Método constructor de la clase Pedido.
 	 * @param id Long, ID del pedido.
@@ -54,15 +52,13 @@ public class Pedido {
 			@JsonProperty(value = "cliente") Cliente cliente, 
 			@JsonProperty(value = "producto") Producto producto,
 			@JsonProperty(value = "fecha") LocalDateTime fecha,
-			@JsonProperty(value = "servido") Boolean servido,
-			@JsonProperty(value = "restaurante")Restaurante restaurante
+			@JsonProperty(value = "servido") Boolean servido
 			) {
 		this.id = id;
 		this.cliente = cliente;
 		this.producto = producto;
 		this.fecha = fecha; 
 		this.servido = servido;
-		this.restaurante = restaurante;
 	}
 	/**
 	 * Método que obtiene el ID del pedido.
@@ -138,8 +134,4 @@ public class Pedido {
 	 * Método que obtiene el Restaurante de este pedido.
 	 * @return Restaurante.
 	 */
-	public Restaurante getRestaurante()
-	{
-		return restaurante;
-	}
 }
