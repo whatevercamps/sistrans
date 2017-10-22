@@ -61,7 +61,8 @@ public class Zona
 			@JsonProperty(value = "esEspacioAbierto")Boolean esEspacioAbierto,
 			@JsonProperty(value = "capacidad")Integer capacidad,
 			@JsonProperty(value = "esIncluyente")Boolean esIncluyente,
-			@JsonProperty(value = "condiciones")List<String> condiciones)
+			@JsonProperty(value = "condiciones")List<String> condiciones,
+			@JsonProperty(value = "restaurantes") List<Restaurante> restaurantes)
 			
 	{
 		this.id = id;
@@ -70,6 +71,7 @@ public class Zona
 		this.capacidad = capacidad;
 		this.esIncluyente = esIncluyente;
 		this.condiciones = condiciones;
+		this.restaurantes = restaurantes;
 	}
 	
 	
@@ -141,7 +143,7 @@ public class Zona
 	 * Método que obtiene si la zona es incluyente o no.
 	 * @return boolean, si es incluyente.
 	 */
-	public Boolean esIncluyente()
+	public Boolean getEsIncluyente()
 	{
 		return esIncluyente;
 	}

@@ -51,11 +51,6 @@ public class Restaurante {
 	@JsonProperty(value = "productos")
 	private List<Producto> productos;
 	/**
-	 * Atributo que contiene la zona de este restaurante.
-	 */
-	@JsonProperty(value = "zona")
-	private Zona zona;
-	/**
 	 * Atributo que contiene el tipo de Restaurante.
 	 */
 	@JsonProperty(value = "tipo")
@@ -78,7 +73,7 @@ public class Restaurante {
 //			@JsonProperty(value="postres") Collection<Postre> postres,
 //			@JsonProperty(value="bebidas") Collection<Bebida> bebidas
 			@JsonProperty(value = "productos")List<Producto> productos,
-			@JsonProperty(value = "zona")Zona zona,
+//			@JsonProperty(value = "zona")Zona zona,
 			@JsonProperty(value = "tipo")String tipo
 			)
 			{
@@ -87,7 +82,6 @@ public class Restaurante {
 		this.name = name;
 		this.pagina = pagina;
 		this.productos = productos;
-		this.zona = zona;
 		this.tipo = tipo;
 //		this.bebidas = bebidas;
 //		this.entradas = entradas;
@@ -207,22 +201,6 @@ public class Restaurante {
 	public void setProductos(List<Producto> productos)
 	{
 		this.productos = productos;
-	}
-	/**
-	 * Método que obtiene la zona a la que el restaurante está asignado.
-	 * @return Zona, zona del restaurante.
-	 */
-	public Zona getZona()
-	{
-		return zona;
-	}
-	/**
-	 * Método que establece la zona del restaurante.
-	 * @param zona Zona, zona del restaurante.
-	 */
-	public void setZona(Zona zona)
-	{
-		this.zona = zona;
 	}
 	/**
 	 * Método que obtiene el tipo del restaurante.
