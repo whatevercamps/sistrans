@@ -57,16 +57,18 @@ public class DAOTablaPedidos {
 		Long id =  darIdMax();	
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime localDate = LocalDateTime.now();
-		String sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO) VALUES (";
+		String sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE) VALUES (";
 		sql += id + ", ";
 		sql += cliente.getId() + ", ";
 		sql += producto.getId() + ", ";
-		sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0)"; 
+		sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
+		sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
+		sql += producto.getRestaurante().getId() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-
+		
 		return new Pedido(id, cliente, producto, localDate, false);
 	}
 

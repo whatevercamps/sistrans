@@ -1,6 +1,6 @@
 package vos;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -12,7 +12,7 @@ public class Ingrediente extends IngredienteBase{
 	@JsonProperty(value="description")
 	private String description;
 	@JsonProperty(value="ingredientesEquivalentes")
-	private Collection<IngredienteBase> ingredientesEquivalentes;
+	private List<IngredienteBase> ingredientesEquivalentes;
 	
 	
 	/**
@@ -26,7 +26,7 @@ public class Ingrediente extends IngredienteBase{
 			@JsonProperty(value="name")String name,
 			@JsonProperty(value="descripcion")String descripcion, 
 			@JsonProperty(value = "description") String description, 
-			@JsonProperty(value = "ingredientesEquivalentes") Collection<IngredienteBase> ingredientesEquivalentes){
+			@JsonProperty(value = "ingredientesEquivalentes") List<IngredienteBase> ingredientesEquivalentes){
 		super(id, name);
 		this.descripcion = descripcion;
 		this.description = description;
@@ -70,14 +70,14 @@ public class Ingrediente extends IngredienteBase{
 	 * Método que obtiene los Ingredientes equivalentes a este.
 	 * @return Collection<IngredienteBase>, Ingredientes equivalentes.
 	 */
-	public Collection<IngredienteBase> getIngredientesEquivalentes(){
+	public List<IngredienteBase> getIngredientesEquivalentes(){
 		return ingredientesEquivalentes;
 	}
 	/**
 	 * Método que establece los Ingredientes equivalentes a este.
 	 * @param ingredientes Collection<IngredienteBase>, nuevos Ingredientes equivalentes a este.
 	 */
-	public void setIngredientesEquivalentes(Collection<IngredienteBase> ingredientes) {
+	public void setIngredientesEquivalentes(List<IngredienteBase> ingredientes) {
 		this.ingredientesEquivalentes = ingredientes;
 	}
 }

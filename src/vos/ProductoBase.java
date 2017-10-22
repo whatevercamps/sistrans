@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ProductoBase
@@ -32,17 +34,26 @@ public class ProductoBase
 	@JsonProperty(value = "categoria")
 	private String categoria;
 	
+	@JsonProperty(value = "ingredientes")
+	private List<Ingrediente> ingredientes;
+	
 	public ProductoBase() {
 		
 	}
 	
-	public ProductoBase(Long id, String nombre, String descripcionEspaniol, String descripcionIngles, Integer categoria)
+	public ProductoBase(@JsonProperty(value="id")Long id, 
+			@JsonProperty(value="nombre")String nombre, 
+			@JsonProperty(value = "descripcionEspaniol")String descripcionEspaniol, 
+			@JsonProperty(value = "descripcionIngles")String descripcionIngles, 
+			@JsonProperty(value = "categoria")String categoria,
+			@JsonProperty(value = "ingredientes")List<Ingrediente> ingredientes)
 	{
 		this.descripcionEspaniol = descripcionEspaniol;
 		this.descripcionIngles = descripcionIngles;
 		this.id = id;
 		this.nombre = nombre;		
-		this.categoria = RotondAndes.categoria[categoria - 1]; 
+		this.categoria = categoria; 
+		this.ingredientes = ingredientes;
 	}
 	
 	
@@ -117,8 +128,15 @@ public class ProductoBase
 		return categoria;
 	}
 	
-	public void setCategoria(Integer categoria) {
-		this.categoria = RotondAndes.categoria[categoria - 1];
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 	
+	public List<Ingrediente> getIngredientes() {
+		return ingredientes;
+	}
+	
+	public void setIngredientes(List<Ingrediente> ingredientes) {
+		this.ingredientes = ingredientes;
+	}
 }

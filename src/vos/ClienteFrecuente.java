@@ -37,9 +37,13 @@ public class ClienteFrecuente extends Cliente
 	 * @param mesa Integer, número de la mesa de este cliente.
 	 * @param nombre String, nombre del cliente.
 	 */
-	public ClienteFrecuente(@JsonProperty(value = "productosPreSeleccionados")List<Producto> productosPreSeleccionados, @JsonProperty(value="contrasenia")String contrasenia,@JsonProperty(value="id")Long id, @JsonProperty(value = "mesa")Integer mesa, @JsonProperty(value = "nombre")String nombre)
+	public ClienteFrecuente(@JsonProperty(value = "productosPreSeleccionados")List<Producto> productosPreSeleccionados, 
+			@JsonProperty(value="contrasenia")String contrasenia,@JsonProperty(value="id")Long id, 
+			@JsonProperty(value = "mesa")Integer mesa, 
+			@JsonProperty(value = "nombre")String nombre,
+			@JsonProperty(value = "ordenes") List<Orden> ordenes)
 	{
-		super(id, mesa, nombre);
+		super(id, mesa, nombre, ordenes);
 		this.contrasenia = contrasenia;
 		this.preferencias = productosPreSeleccionados;
 	}

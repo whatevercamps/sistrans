@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @author dj.bautista10
  *
  */
-public abstract class IngredienteBase 
+public class IngredienteBase 
 {
 	/**
 	 * Atributo que contiene el ID del Ingrediente.

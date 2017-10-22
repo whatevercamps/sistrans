@@ -20,8 +20,10 @@ import java.util.Properties;
 
 import dao.DAOTablaClientes;
 import dao.DAOTablaClientesFrecuentes;
+import dao.DAOTablaIngredientes;
 import dao.DAOTablaPedidos;
 import dao.DAOTablaProductos;
+import dao.DAOTablaRestaurantes;
 import vos.Cliente;
 import vos.Pedido;
 import vos.Producto;
@@ -177,14 +179,20 @@ public class RotondAndesTM {
 		}
 		return res;
 	}
-	
+
 	public Producto darProducto(Long id, Long idRest) throws SQLException, Exception {
 		Producto res;
-		DAOTablaProductos dao = new DAOTablaProductos(); 
+		DAOTablaProductos daoProd = new DAOTablaProductos(); 
+		DAOTablaIngredientes daoIng = new DAOTablaIngredientes();
 		try {
 			this.conn = darConexion();
-			dao.setConn(conn);
-			res = dao.darProducto(id, idRest);
+			daoProd.setConn(conn);
+			res = daoProd.darProducto(id, idRest);
+			
+			//INICIO DE LA SEGUNDA PARTE DE LA TRANSACCION
+			daoIng.setConn(conn);
+			res.setIngredientes(daoIng.darIngredientesProducto(id));
+			System.out.println(" POST-SETINGREDIENTES ingredientes: " + res.getIngredientes().size());
 
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -194,9 +202,11 @@ public class RotondAndesTM {
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
-		} finally {
+		} 
+		finally {
 			try {
-				dao.cerrarRecursos();
+				daoProd.cerrarRecursos();
+				daoIng.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -205,9 +215,10 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+
 		return res;
 	}
-	 
+
 
 
 	public void borrarPreferenciaClienteFrecuente(Long id, String password, Long idProd) throws SQLException, Exception {
@@ -275,7 +286,6 @@ public class RotondAndesTM {
 			Cliente cliente = darCliente(id);
 			Producto producto = darProducto(idProd, idRestProd);
 			res = dao.registrarPedido(cliente, producto);
-			return res;
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -295,7 +305,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-
+		return res;
 
 	}
 

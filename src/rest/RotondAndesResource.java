@@ -21,8 +21,6 @@ public class RotondAndesResource {
 	private ServletContext context;
 	
 
-	
-	
 	@GET
 	@Path("productos/{identificador: \\d+}")
 	@Produces({MediaType.APPLICATION_JSON})

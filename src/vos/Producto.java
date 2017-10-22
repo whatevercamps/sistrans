@@ -24,12 +24,9 @@ public class Producto extends ProductoBase
 	 */
 	@JsonProperty(value="costoDeProduccion")
 	private Double costoDeProduccion;
-	/**
-	 * Descripcion en español del producto.
-	 */
 
 	/**
-	 * Atributo que contiene los IDs de los productos equivalentes.
+	 * Atributo que contiene  los productos equivalentes.
 	 */
 	@JsonProperty(value = "productosEquivalentes")
 	private List<ProductoBase> productosEquivalentes;
@@ -51,7 +48,7 @@ public class Producto extends ProductoBase
 	 * @param costoDeProduccion
 	 * @param descripcionEspaniol
 	 * @param descripcionIngles
-	 * @param idProductosEquivalentes
+	 * @param ProductosEquivalentes
 	 * @param precio
 	 * @param tiposComida
 	 */
@@ -68,9 +65,10 @@ public class Producto extends ProductoBase
 			@JsonProperty(value = "productos_equivalentes") List<ProductoBase> productosEquivalentes, 
 			@JsonProperty(value = "precio") Double precio, 
 			@JsonProperty(value = "tipos") List<TipoComida> tiposComida,
-			@JsonProperty(value = "categoria") Integer categoria){
+			@JsonProperty(value = "categoria") String categoria,
+			@JsonProperty(value = "ingredientes") List<Ingrediente> ingredientes){
 		
-		super(id, nombre, descripcionEspaniol, descripcionIngles, categoria);
+		super(id, nombre, descripcionEspaniol, descripcionIngles, categoria, ingredientes);
 		this.costoDeProduccion = costoDeProduccion;
 		this.productosEquivalentes = productosEquivalentes;
 		this.precio = precio;
@@ -112,17 +110,17 @@ public class Producto extends ProductoBase
 	}
 	/**
 	 * Método que obtiene los IDs de los productos equivalentes a este.
-	 * @return List<Long>, Lista de IDs de productos Equivalentes.
+	 * @return List<ProductoBase>, Lista de productos Equivalentes.
 	 */
-	public List<ProductoBase> getIdProductosEquivalentes()
+	public List<ProductoBase> getProductosEquivalentes()
 	{
 		return productosEquivalentes;
 	}
 	/**
 	 * Método que establece una lista de IDs de productos equivalentes a este.
-	 * @param idProductosEquivalentes List<Long>, Lista de IDs de productos equivalentes.
+	 * @param ProductosEquivalentes List<ProductoBase>, Lista de productos equivalentes.
 	 */
-	public void setIdProductosEquivalentes(List<ProductoBase> productosEquivalentes)
+	public void setProductosEquivalentes(List<ProductoBase> productosEquivalentes)
 	{
 		this.productosEquivalentes = productosEquivalentes;
 	}
@@ -142,4 +140,6 @@ public class Producto extends ProductoBase
 	{
 		this.tiposComida = tiposComida;
 	}
+	
+
 }

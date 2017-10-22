@@ -11,6 +11,8 @@
 package vos;
 
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.*;
 
 public class Cliente
@@ -31,7 +33,8 @@ public class Cliente
 	@JsonProperty(value = "nombre")
 	private String nombre;
 
-	
+	@JsonProperty(value = "ordenes")
+	private List<Orden> ordenes;
 	
 	/**
 	 * Método constructor de la clase ClienteVos.
@@ -41,11 +44,13 @@ public class Cliente
 	 */
 	public Cliente(@JsonProperty(value="id")Long id, 
 			@JsonProperty(value = "mesa")Integer mesa, 
-			@JsonProperty(value = "nombre")String nombre)
+			@JsonProperty(value = "nombre")String nombre,
+			@JsonProperty(value = "ordenes") List<Orden> ordenes)
 	{
 		this.id = id;
 		this.mesa = mesa;
 		this.nombre = nombre;
+		this.ordenes = ordenes;
 	}
 	/**
 	 * Método que obtiene el ID de este cliente-
@@ -94,6 +99,24 @@ public class Cliente
 	public void setNombre(String nombre)
 	{
 		this.nombre = nombre;
+	}
+	
+	/**
+	 * Método que obtiene el nombre de este cliente.
+	 * @return String, nombre del cliente.
+	 */
+	public List<Orden> getOrdenes()
+	{
+		return this.ordenes;
+	}
+	
+	/**
+	 * Método que establece el nombre de este cliente.
+	 * @param nombre String, nuevo nombre del cliente.
+	 */
+	public void setOrdenes(List<Orden> ordenes)
+	{
+		this.ordenes = ordenes;
 	}
 
 

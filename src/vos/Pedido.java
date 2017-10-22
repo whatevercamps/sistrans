@@ -33,12 +33,7 @@ public class Pedido {
 	@JsonProperty(value = "servido")
 	private Boolean servido;
 	
-	/**
-	 * Atributo que contiene la orden a la que está asociada este pedido.
-	 */
-	@JsonProperty(value = "orden")
-	private Orden orden;
-	
+
 	/**
 	 * Método constructor de la clase Pedido.
 	 * @param id Long, ID del pedido.

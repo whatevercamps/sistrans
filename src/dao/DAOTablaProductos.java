@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import vos.Ingrediente;
 import vos.Producto;
+import vos.ProductoBase;
+import vos.RotondAndes;
 
 public class DAOTablaProductos {
 	private ArrayList<Object> recursos;
@@ -60,8 +64,8 @@ public class DAOTablaProductos {
 		}
 		return productos;
 	}
-	
-	
+
+
 	public Producto darProducto(Long id, Long idRest) throws SQLException, Exception {
 		Producto producto = new Producto();
 
@@ -75,14 +79,40 @@ public class DAOTablaProductos {
 			producto.setNombre(rs.getString("NAME"));
 			producto.setDescripcionEspaniol(rs.getString("DESCRIPCION"));
 			producto.setDescripcionIngles(rs.getString("DESCRIPTION"));
+			producto.setCategoria(rs.getString("CATEGORIA"));
 			producto.setCostoDeProduccion(rs.getDouble("COSTO_PRODUCCION"));
 			producto.setPrecio(rs.getDouble("PRECIO"));
-
+			producto.setProductosEquivalentes(darProductosEquivalentes(producto.getId(), idRest));
+			
 			return producto;
 		}
 		return null;
 	}
-	 
+
+
+	private List<ProductoBase> darProductosEquivalentes(Long id, Long idRest)  throws SQLException, Exception {
+		String sql = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE, PRODUCTOSSIMILARES WHERE ID = ID_PROD AND ID_PROD2 = ID_PROD AND ID_REST = "; 
+		sql += idRest + " AND ID_PROD1 = "  + id; 
+		System.out.println(sql);
+		PreparedStatement st = conn.prepareStatement(sql);
+		recursos.add(st);
+		ResultSet rs = st.executeQuery();
+		
+		List<ProductoBase> prods = new ArrayList<>();
+		
+		while (rs.next()) {
+			ProductoBase prod = new ProductoBase();
+			prod.setId(rs.getLong("ID"));
+			prod.setNombre(rs.getString("NAME"));
+			prod.setDescripcionEspaniol(rs.getString("DESCRIPCION"));
+			prod.setDescripcionIngles(rs.getString("DESCRIPTION"));
+			prod.setCategoria(rs.getString("CATEGORIA"));
+			prods.add(prod);
+		}
+		return prods;
+	}
+
+
 
 	public List<Producto> darProductosPor(Integer filtro, Object parametro) throws SQLException, Exception{
 		ArrayList<Producto> productos = new ArrayList<Producto>();
