@@ -17,7 +17,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-
 import dao.DAOTablaClientes;
 import dao.DAOTablaClientesFrecuentes;
 import dao.DAOTablaIngredientes;
@@ -25,6 +24,7 @@ import dao.DAOTablaPedidos;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import vos.Cliente;
+import vos.ClienteFrecuente;
 import vos.Pedido;
 import vos.Producto;
 
@@ -226,7 +226,11 @@ public class RotondAndesTM {
 		try {
 			this.conn = darConexion();
 			dao.setConn(conn);
-			//TODO Verificar Cliente
+			//Verificar Cliente
+			if(!dao.verficarCliente(id, password)) 
+				throw new Exception("Clave invalida");
+			//fin Verificacion		
+			
 			dao.borrarPreferencia(id, idProd);
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -249,13 +253,26 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void agregarPreferenciaClienteFrecuente(Long id, String password, Long idProd) throws SQLException, Exception {
+	public ClienteFrecuente agregarPreferenciaClienteFrecuente(Long id, String password, Long idProd) throws SQLException, Exception {
+		ClienteFrecuente cliente = null;
 		DAOTablaClientesFrecuentes dao = new DAOTablaClientesFrecuentes();
+		DAOTablaProductos daoPref = new DAOTablaProductos();
 		try {
 			this.conn = darConexion();
 			dao.setConn(conn);
-			//TODO Verificar Cliente
+			
+			//Verificar Cliente
+			if(!dao.verficarCliente(id, password)) 
+				throw new Exception("Clave invalida");
+			//fin Verificacion		
+			
 			dao.registrarPreferencia(id, idProd);
+			
+			//INICIO AGREGAR PREFERENCIAS A ENIDAD CLIENTEFRECUENTE
+			cliente = dao.darClienteFrecuente(id);
+			daoPref.setConn(conn);
+			cliente.setPreferencias(daoPref.darPreferencias(id));
+			
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -275,6 +292,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+		return cliente;
 	}
 
 	public Pedido agregarPedido(Long id, Long idProd, Long idRestProd) throws SQLException, Exception {

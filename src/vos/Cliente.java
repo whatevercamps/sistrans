@@ -36,6 +36,10 @@ public class Cliente
 	@JsonProperty(value = "ordenes")
 	private List<Orden> ordenes;
 	
+	
+	public Cliente() {
+		
+	}
 	/**
 	 * Método constructor de la clase ClienteVos.
 	 * @param id

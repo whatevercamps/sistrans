@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Cliente;
 import vos.Producto;
 
 @Path("admin")
@@ -34,6 +35,35 @@ public class RotondAndesResource {
 		}
 		return Response.status(200).entity(productos).build();
 		
+	}
+	
+	@GET
+	@Path("clientes")
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getClientes() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Cliente> clientes;
+		try {
+			clientes = tm.darClientes();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(clientes).build();
+		
+	}
+	
+	@GET
+	@Path("clientes/{id: \\d+}")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getCliente(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			Cliente cliente = tm.darCliente(id);
+			return Response.status( 200 ).entity( cliente ).build( );		
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
 	}
 	
 	

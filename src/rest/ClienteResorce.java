@@ -31,7 +31,7 @@ import vos.Producto;
  * @author David Bautista
  */
 
-@Path("clientes")
+@Path("cliente")
 public class ClienteResorce {
 
 	@XmlRootElement
@@ -43,36 +43,6 @@ public class ClienteResorce {
 	
 	@Context
 	private ServletContext context;
-	
-	@GET
-	@Produces({MediaType.APPLICATION_JSON})
-	public Response getClientes() {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Cliente> clientes;
-		try {
-			clientes = tm.darClientes();
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(clientes).build();
-		
-	}
-	
-	@GET
-	@Path("{id: \\d+}")
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getCliente(@PathParam("id") Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			Cliente cliente = tm.darCliente(id);
-			return Response.status( 200 ).entity( cliente ).build( );		
-		}catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}
-	
-	
 	
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");

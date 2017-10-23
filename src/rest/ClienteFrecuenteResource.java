@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -41,11 +42,10 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON  } )
-	public Response setPreferenciaCliente(@PathParam("ClienteId") Long id, RequestBody request){
+	public Response setPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProd") Long idProd, @HeaderParam("password") String password){
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.agregarPreferenciaClienteFrecuente(id, request.password, request.idProd);
-			String rt = new String("{ \"RESPUESTA\": \" preferencia creada \"}");
+			ClienteFrecuente rt = tm.agregarPreferenciaClienteFrecuente(id, password, idProd);
 			return Response.status(200).entity(rt).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
@@ -56,10 +56,10 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response deletePreferenciaCliente(@PathParam("ClienteId") Long id, RequestBody request) {
+	public Response deletePreferenciaCliente(@PathParam("ClienteId") Long id,  @QueryParam("idProd") Long idProd, @HeaderParam("password") String password) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.borrarPreferenciaClienteFrecuente(id, request.password, request.idProd);
+			tm.borrarPreferenciaClienteFrecuente(id, password, idProd);
 			String rt = new String("{ \"RESPUESTA\": \" preferencia borrada con éxito \"}");
 			return Response.status(200).entity(rt).build();
 		} catch (Exception e) {
@@ -71,12 +71,11 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response modifyPreferenciaCliente(@PathParam("ClienteId") Long id, RequestBody request) {
+	public Response modifyPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProdPasado") Long idProdPasado, @QueryParam("idProd") Long idProd, @HeaderParam("password") String password) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.borrarPreferenciaClienteFrecuente(id, request.password, request.idProdPasado);
-			tm.agregarPreferenciaClienteFrecuente(id, request.password, request.idProd);
-			String rt = new String("{ \"RESPUESTA\": \" preferencia modificada con éxito \"}");
+			tm.borrarPreferenciaClienteFrecuente(id, password, idProdPasado);
+			ClienteFrecuente rt = tm.agregarPreferenciaClienteFrecuente(id, password, idProd);
 			return Response.status(200).entity(rt).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();

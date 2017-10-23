@@ -147,6 +147,30 @@ public class DAOTablaProductos {
 			a++;
 		}
 		return productos;
+	}
+
+
+
+	public List<ProductoBase> darPreferencias(Long id)  throws SQLException, Exception{
+		List<ProductoBase> preferencias = new ArrayList<>();
+		
+		String sql = "SELECT * FROM PRODUCTOS, PREFERENCIAS WHERE ID_PRODUCTO = ID AND ID_CLIENTEFRECUENTE = " + id;
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		while(rs.next()) {
+			ProductoBase prod = new ProductoBase();
+			prod.setId(rs.getLong("ID"));
+			prod.setNombre(rs.getString("NAME"));
+			prod.setDescripcionEspaniol(rs.getString("DESCRIPCION"));
+			prod.setDescripcionIngles(rs.getString("DESCRIPTION"));
+			prod.setCategoria(rs.getString("CATEGORIA"));
+			
+			preferencias.add(prod);
+		}
+		return preferencias;
 	} 
 
 }
