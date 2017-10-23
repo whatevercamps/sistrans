@@ -23,10 +23,12 @@ import dao.DAOTablaIngredientes;
 import dao.DAOTablaPedidos;
 import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
+import dao.DAOTablaZonas;
 import vos.Cliente;
 import vos.ClienteFrecuente;
 import vos.Pedido;
 import vos.Producto;
+import vos.Zona;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -415,5 +417,69 @@ public class RotondAndesTM {
 		}
 		return productos; 
 	}
+	
+	public Zona agregarZona(Long id, String nombre, Boolean esEspacioAbierto, Integer capacidad, Boolean esIncluyente, List<String> condiciones, List<String> restaurantes)throws SQLException, Exception
+	{
+		Zona nuevaZona = new Zona(id, nombre, esEspacioAbierto, capacidad, esIncluyente, condiciones, null);
+		DAOTablaZonas dao = new DAOTablaZonas();
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);	
+			
+			dao.addZona(nuevaZona);
+			
+			//INICIO AGREGAR PREFERENCIAS A ENIDAD CLIENTEFRECUENTE
+			
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return nuevaZona;
+	}
+	
+	
+	public List<Zona> darZonasSinParametro() throws SQLException, Exception {
+		List<Zona> zonas; 
+		DAOTablaZonas dao = new DAOTablaZonas();
 
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);
+			zonas = dao.getZonasSinParametros();
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return zonas; 
+	}
 }

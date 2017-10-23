@@ -103,37 +103,48 @@ public class DAOTablaZonas
 	 */
 	public void addZona(Zona zona) throws SQLException, Exception
 	{
-		List<Restaurante> restaurantes = zona.getRestaurantes();
-		//ZONA DE VALIDACIÓN DE REGLAS DE NEGOCIO
-		for(int i = 0; i < restaurantes.size(); i++)
-		{
-			String sqlValidacionRestaurantesNombre = "SELECT ID, NAME FROM RESTAURANTES WHERE NAME = " + restaurantes.get(i).getName();
-			String sqlValidacionRestaurantesId = "SELECT ID, NAME FROM RESTAURANTES WHERE ID = " + restaurantes.get(i).getId();
-			
-			PreparedStatement prepStmtNombre = conn.prepareStatement(sqlValidacionRestaurantesNombre);
-			recursos.add(prepStmtNombre);
-			ResultSet rsNombre = prepStmtNombre.executeQuery();
-			
-			PreparedStatement prepStmtIds = conn.prepareStatement(sqlValidacionRestaurantesId);
-			recursos.add(prepStmtIds);
-			ResultSet rsIds = prepStmtIds.executeQuery();
-			if(rsIds.getFetchSize()==0)
-			{
-				throw new Exception("El restaurante con ID: " + restaurantes.get(i).getId() + " no existe." );
-			}
-			if(rsNombre.getFetchSize()==0)
-			{
-				throw new Exception("El restaurante con Nombre: " + restaurantes.get(i).getName() + " no existe." );
-			}
-//			while(rsNombre.next() && rsIds.next())
+//		List<Restaurante> restaurantes = zona.getRestaurantes();
+//		//ZONA DE VALIDACIÓN DE REGLAS DE NEGOCIO
+//		for(int i = 0; i < restaurantes.size(); i++)
+//		{
+//			String sqlValidacionRestaurantesNombre = "SELECT ID, NAME FROM RESTAURANTES WHERE NAME = " + restaurantes.get(i).getName();
+//			String sqlValidacionRestaurantesId = "SELECT ID, NAME FROM RESTAURANTES WHERE ID = " + restaurantes.get(i).getId();
+//			
+//			PreparedStatement prepStmtNombre = conn.prepareStatement(sqlValidacionRestaurantesNombre);
+//			recursos.add(prepStmtNombre);
+//			ResultSet rsNombre = prepStmtNombre.executeQuery();
+//			
+//			PreparedStatement prepStmtIds = conn.prepareStatement(sqlValidacionRestaurantesId);
+//			recursos.add(prepStmtIds);
+//			ResultSet rsIds = prepStmtIds.executeQuery();
+//			if(rsIds.getFetchSize()==0)
 //			{
-//				if(!rsNombre.getString("NAME").equals(rsIds.getString("NAME")) || (rsNombre.getInt("ID") != rsIds.getInt("ID")) )
-//				{
-//					throw new Exception("El restaurante con ID: " + restaurantes.get(i).getId() + " y nombre: " + restaurantes.get(i).getName() + " tiene información que no concuerda.");
-//				}
+//				throw new Exception("El restaurante con ID: " + restaurantes.get(i).getId() + " no existe." );
 //			}
-			
+//			if(rsNombre.getFetchSize()==0)
+//			{
+//				throw new Exception("El restaurante con Nombre: " + restaurantes.get(i).getName() + " no existe." );
+//			}
+////			while(rsNombre.next() && rsIds.next())
+////			{
+////				if(!rsNombre.getString("NAME").equals(rsIds.getString("NAME")) || (rsNombre.getInt("ID") != rsIds.getInt("ID")) )
+////				{
+////					throw new Exception("El restaurante con ID: " + restaurantes.get(i).getId() + " y nombre: " + restaurantes.get(i).getName() + " tiene información que no concuerda.");
+////				}
+////			}
+//			
+//		}
+		String sqlZonaConID = "SELECT * FROM ZONAS WHERE ID = " + zona.getId();
+		PreparedStatement prepStmtID= conn.prepareStatement(sqlZonaConID);
+		recursos.add(prepStmtID);
+		ResultSet rsID = prepStmtID.executeQuery();
+		
+		if(rsID.getFetchSize() > 0)
+		{
+			throw new Exception ("Zona con ID dado ya existe.");
 		}
+		
+		
 		//ZONA EN QUE SE AGREGA LA ZONA
 		String sql = "INSERT INTO ZONAS VALUES (";
 		sql += zona.getId() + ",'";
@@ -158,30 +169,36 @@ public class DAOTablaZonas
 		sql += ");";
 
 		
-		String sqlCondiciones = "SELECT * FROM CONDICIONESTECNICAS";
-		
-		PreparedStatement prepStmtCondiciones = conn.prepareStatement(sqlCondiciones);
-		recursos.add(prepStmtCondiciones);
-		ResultSet rsCondiciones = prepStmtCondiciones.executeQuery();
-		List<String> condiciones = zona.getCondiciones();
-		
-		for(int i = 0; i < zona.getCondiciones().size(); i++)
+		if(zona.getCondiciones() != null)
 		{
-			while(rsCondiciones.next())
+			String sqlCondiciones = "SELECT * FROM CONDICIONESTECNICAS";
+			
+			PreparedStatement prepStmtCondiciones = conn.prepareStatement(sqlCondiciones);
+			recursos.add(prepStmtCondiciones);
+			ResultSet rsCondiciones = prepStmtCondiciones.executeQuery();
+			List<String> condiciones = zona.getCondiciones();
+			
+			for(int i = 0; i < zona.getCondiciones().size(); i++)
 			{
-				Long idCondicion = rsCondiciones.getLong("ID");
-				String condicion = rsCondiciones.getString("NAME");
-				if(condiciones.get(i).equals(condicion))
+				while(rsCondiciones.next())
 				{
-					sql += ("\n" + "INSERT INTO CONDICIONZONA VALUES (" + zona.getId() +", "+ condicion +");" );
+					Long idCondicion = rsCondiciones.getLong("ID");
+					String condicion = rsCondiciones.getString("NAME");
+					if(condiciones.get(i).equals(condicion))
+					{
+						sql += ("\n" + "INSERT INTO CONDICIONZONA VALUES (" + zona.getId() +", "+ condicion +");" );
+					}
 				}
 			}
 		}
 
-		for(int i = 0; i < restaurantes.size(); i++)
-		{
-			sql += "\n" + "UPDATE RESTAURANTES SET ID_ZONA = " + zona.getId() + "WHERE ID = " + restaurantes.get(i).getId() + ";";
-		}
+//		if(restaurantes != null)
+//		{
+//			for(int i = 0; i < restaurantes.size(); i++)
+//			{
+//				sql += "\n" + "UPDATE RESTAURANTES SET ID_ZONA = " + zona.getId() + "WHERE ID = " + restaurantes.get(i).getId() + ";";
+//			}
+//		}
 		
 		System.out.println("SQL statement:" + sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
