@@ -49,6 +49,7 @@ public class DAOTablaClientes {
 			String name = rs.getString("NAME");
 			Long id = rs.getLong("ID");
 			Integer mesa = rs.getInt("MESA"); 
+			
 			clientes.add(new Cliente(id, mesa, name));
 		}
 		return clientes;

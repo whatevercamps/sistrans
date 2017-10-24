@@ -215,7 +215,7 @@ public class DAOTablaZonas
 	 */
 	public List<Zona> getZonasSinParametros()throws SQLException, Exception
 	{
-		String sqlZonasMain = "SELECT * FROM ZONAS;";
+		String sqlZonasMain = "SELECT * FROM ZONAS";
 		
 		PreparedStatement prepStmtZonasMain= conn.prepareStatement(sqlZonasMain);
 		recursos.add(prepStmtZonasMain);
@@ -231,7 +231,8 @@ public class DAOTablaZonas
 			Integer capacidad = rsMain.getInt("CAPACIDAD");
 			Boolean esIncluyente = rsMain.getBoolean("INCLUYENTE");
 			
-			String sqlCondiciones = "SELECT C.ID AS ID, Z.NAME AS NAME FROM CONDICIONESTECNICAS C, CONDICIONZONA Z WHERE Z.ID_ZONA = " + id + " AND Z.ID_CONDICION = C.ID ORDER BY ID DESC;";
+			String sqlCondiciones = "SELECT * FROM CONDICIONESTECNICAS , CONDICIONZONA  WHERE ID_ZONA = " + id + "AND ID_CONDICION = ID ORDER BY ID ASC";
+			System.out.println(sqlCondiciones);
 			PreparedStatement prepStmtCondiciones= conn.prepareStatement(sqlCondiciones);
 			recursos.add(prepStmtCondiciones);
 			ResultSet rsCondiciones = prepStmtCondiciones.executeQuery();
@@ -245,33 +246,33 @@ public class DAOTablaZonas
 			Zona newZona = new Zona(id, nombre, esEspacioAbierto, capacidad, esIncluyente, condiciones, null);
 			
 			
-			String sqlRestaurantes = "SELECT * FROM RESTAURANTES WHERE ID_ZONA = " + id + ";";
-			PreparedStatement prepStmtRestaurantes= conn.prepareStatement(sqlRestaurantes);
-			recursos.add(prepStmtRestaurantes);
-			ResultSet rsRestaurantes = prepStmtRestaurantes.executeQuery();
-			
-			List<Restaurante> restuarantes = new ArrayList<Restaurante>();
-			while(rsRestaurantes.next())
-			{
-				Long idRestaurante = rsRestaurantes.getLong("ID");
-				String nameRestaurante = rsRestaurantes.getString("NAME");
-				String paginaRestaurante = rsRestaurantes.getString("PAGINA_WEB");
-				
-				String sqlTipoRestaurantes = "SELECT T.NAME FROM RESTAURANTES R, TIPOS T WHERE R.ID_TIPO = T.ID AND R.ID =" + idRestaurante + ";";
-				PreparedStatement prepStmtTipoRestaurantes= conn.prepareStatement(sqlTipoRestaurantes);
-				recursos.add(prepStmtTipoRestaurantes);
-				ResultSet rsTipoRestaurantes = prepStmtTipoRestaurantes.executeQuery();
-				
-				String tipoRestaurante = rsTipoRestaurantes.getString("NAME");
-				
-				//TODO INICIO PARTE DE PROCESAR LOS PRODUCTOS DEL RESTAURANTE.
-				List<Producto> productosRestaurantes = null;
-				
-				
-				//FIN PARTE DE PROCESAR LOS PRODUCTOS DEL RESTAURANTE.
-				Restaurante newRestaurante = new Restaurante(idRestaurante, nameRestaurante, paginaRestaurante, productosRestaurantes, tipoRestaurante);
-				restuarantes.add(newRestaurante);
-			}
+//			String sqlRestaurantes = "SELECT * FROM RESTAURANTES WHERE ID_ZONA = " + id + " ";
+//			PreparedStatement prepStmtRestaurantes= conn.prepareStatement(sqlRestaurantes);
+//			recursos.add(prepStmtRestaurantes);
+//			ResultSet rsRestaurantes = prepStmtRestaurantes.executeQuery();
+//			
+//			List<Restaurante> restuarantes = new ArrayList<Restaurante>();
+//			while(rsRestaurantes.next())
+//			{
+//				Long idRestaurante = rsRestaurantes.getLong("ID");
+//				String nameRestaurante = rsRestaurantes.getString("NAME");
+//				String paginaRestaurante = rsRestaurantes.getString("PAGINA_WEB");
+//				
+//				String sqlTipoRestaurantes = "SELECT T.NAME FROM RESTAURANTES R, TIPOS T WHERE R.ID_TIPO = T.ID AND R.ID =" + idRestaurante + " ";
+//				PreparedStatement prepStmtTipoRestaurantes= conn.prepareStatement(sqlTipoRestaurantes);
+//				recursos.add(prepStmtTipoRestaurantes);
+//				ResultSet rsTipoRestaurantes = prepStmtTipoRestaurantes.executeQuery();
+//				
+//				String tipoRestaurante = rsTipoRestaurantes.getString("NAME");
+//				
+//				//TODO INICIO PARTE DE PROCESAR LOS PRODUCTOS DEL RESTAURANTE.
+//				List<Producto> productosRestaurantes = null;
+//				
+//				
+//				//FIN PARTE DE PROCESAR LOS PRODUCTOS DEL RESTAURANTE.
+//				Restaurante newRestaurante = new Restaurante(idRestaurante, nameRestaurante, paginaRestaurante, productosRestaurantes, tipoRestaurante);
+//				restuarantes.add(newRestaurante);
+//			}
 			zonas.add(newZona);
 		}
 		return zonas;
