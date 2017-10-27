@@ -1,5 +1,6 @@
 package rest;
 
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -23,6 +24,7 @@ import tm.RotondAndesTM;
 import vos.Cliente;
 import vos.Pedido;
 import vos.Producto;
+import vos.Restaurante;
 
 
 
@@ -56,10 +58,18 @@ public class ClienteResorce {
 	@POST
 	@Path("{id: \\d+}/pedidos")
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response agregarPedido(@PathParam("id") Long id, RequestBody request) {
+	public Response agregarPedido(@PathParam("id") Long id, @QueryParam("idProd") Long idProd, @QueryParam("idRest") Long idRestProd) throws SQLException, Exception {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
+		
+		Restaurante res = tm.darRestaurante(idRestProd);
+		if(res == null) {
+			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL RESTAURANTE" + "\"}" ).build( );
+		}
+		
+		
+		
 		try {
-			Pedido pedido = tm.agregarPedido(id, request.idProd, request.idRestProd);
+			Pedido pedido = tm.agregarPedido(id, idProd, res);
 			 
 			return Response.status( 200 ).entity( pedido ).build();	
 		}catch( Exception e )

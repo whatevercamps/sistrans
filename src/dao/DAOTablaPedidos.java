@@ -53,7 +53,7 @@ public class DAOTablaPedidos {
 	
 	
 
-	public Pedido registrarPedido(Cliente cliente, Producto producto) throws SQLException, Exception{
+	public Pedido registrarPedido(Cliente cliente, Producto producto, Long idRest) throws SQLException, Exception{
 		Long id =  darIdMax();	
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime localDate = LocalDateTime.now();
@@ -63,7 +63,7 @@ public class DAOTablaPedidos {
 		sql += producto.getId() + ", ";
 		sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
 		sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
-		sql += producto.getRestaurante().getId() + ")";
+		sql += idRest + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

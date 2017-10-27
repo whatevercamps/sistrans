@@ -49,29 +49,16 @@ public class DAOTablaClientes {
 			String name = rs.getString("NAME");
 			Long id = rs.getLong("ID");
 			Integer mesa = rs.getInt("MESA"); 
-			
-			clientes.add(new Cliente(id, mesa, name));
+			Cliente cliente = new Cliente();
+			cliente.setId(id);
+			cliente.setNombre(name);
+			cliente.setMesa(mesa);
+	
+			clientes.add(cliente);
 		}
 		return clientes;
 	}
 
-
-	public  Cliente getClienteQueMasHaPedido() throws SQLException {
-		Cliente cliente = null;
-
-		String sent = "SELECT * FROM CLIENTES WHERE ID IN (SELECT ID_CLIENTE FROM (SELECT ID_CLIENTE, MAX(COUNT(ID_PRODUCTO)) FROM CLIENTES LEFT OUTER JOIN PEDIDOS ON ID = ID_CLIENTE GROUP BY ID_PRODUCTO))";
-		PreparedStatement st = conn.prepareStatement(sent);
-		recursos.add(st);
-		ResultSet rs = st.executeQuery();	
-		
-		if(rs.next()) {
-			Long id2 = rs.getLong("ID");
-			String nameclientePorId = rs.getString("NAME");
-			Integer mesaClientePorId = rs.getInt("MESA");
-			cliente = new Cliente(id2, mesaClientePorId, nameclientePorId);
-		}
-		return cliente;
-	}
 
 
 
@@ -87,7 +74,10 @@ public class DAOTablaClientes {
 			Long id2 = rsClientePorId.getLong("ID");
 			String nameclientePorId = rsClientePorId.getString("NAME");
 			Integer mesaClientePorId = rsClientePorId.getInt("MESA");
-			clientePorId = new Cliente(id2, mesaClientePorId, nameclientePorId);
+			clientePorId = new Cliente();
+			clientePorId.setId(id2);
+			clientePorId.setNombre(nameclientePorId);
+			clientePorId.setMesa(mesaClientePorId);
 		}
 
 		return clientePorId;

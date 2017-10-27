@@ -37,7 +37,18 @@ public class DAOTablaRestaurantes {
 		this.conn = conn;
 	}
 
-
+	public Restaurante darRestaurante(Long id) throws SQLException, Exception{
+		String sql = "SELECT * FROM RESTAURANTES WHERE ID = " + id;
+		
+		PreparedStatement st = conn.prepareStatement(sql);
+		recursos.add(st);
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next())
+			return new Restaurante(rs.getLong("ID"), rs.getString("NAME"), rs.getString("PAGINA_WEB"), new ArrayList<Producto>(), new TipoComida(0L, new String("hola")));
+		return null;
+	}
+	
 	public List<Restaurante> darRestaurantesDeZona(Long id) throws SQLException, Exception {
 		List<Restaurante> restaurantes = new ArrayList<>();
 		String sql = "SELECT * FROM RESTAURANTES  WHERE ID_ZONA = " + id;
