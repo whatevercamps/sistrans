@@ -22,7 +22,7 @@ public class DAOTablaProductos {
 	public static final int CATEGORIA = 2;
 	public static final int RANGO_PRECIOS= 3;
 	public static final int TIPO = 4;
-
+	public static final int ORDEN = 5;
 
 	public DAOTablaProductos() {
 		recursos = new ArrayList<Object>();		
@@ -116,7 +116,7 @@ public class DAOTablaProductos {
 
 
 	public List<Producto> darProductosPor(Integer filtro, String parametro) throws SQLException, Exception{
-		ObjectMapper om = new ObjectMapper();
+		
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 		String sentencia = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE WHERE ID = ID_PROD ";
 
@@ -134,6 +134,10 @@ public class DAOTablaProductos {
 		case RANGO_PRECIOS:
 			String[] precios = parametro.split(",");
 			sentencia += "AND PRECIO >= " + Integer.parseInt(precios[0]) + " AND  PRECIO <= " + Integer.parseInt(precios[1]);
+			
+		case ORDEN: 
+			sentencia =" SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE, PEDIDOS ";
+			sentencia +=  "WHERE PRODUCTOS.ID = ID_PROD AND PEDIDOS.ID_PRODUCTO = ID_PROD AND PEDIDOS.ID_RESTAURANTE = ID_REST AND ID_ORDEN = " + Integer.parseInt(parametro);
 		default:
 			break;
 		}
@@ -143,7 +147,7 @@ public class DAOTablaProductos {
 		ResultSet rs = stamnt.executeQuery();
 		while(rs.next()) {
 			Producto producto = new Producto();
-			producto.setId(rs.getLong("ID"));
+			producto.setId(rs.getLong("ID_PROD"));
 			producto.setNombre(rs.getString("NAME"));
 			producto.setDescripcionEspaniol(rs.getString("DESCRIPCION"));
 			producto.setDescripcionIngles(rs.getString("DESCRIPTION"));
@@ -153,7 +157,9 @@ public class DAOTablaProductos {
 			producto.setProductosEquivalentes(darProductosEquivalentes(producto.getId(), rs.getLong("ID_REST")));
 			productos.add(producto);
 		}
+		System.out.println("------------> sentencia:  " + sentencia);
 		return productos;
+		
 	}
 
 

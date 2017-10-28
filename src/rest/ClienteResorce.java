@@ -69,7 +69,7 @@ public class ClienteResorce {
 		
 		
 		try {
-			Pedido pedido = tm.agregarPedido(id, idProd, res);
+			Pedido pedido = tm.agregarPedido(id, idProd, res.getId());
 			 
 			return Response.status( 200 ).entity( pedido ).build();	
 		}catch( Exception e )

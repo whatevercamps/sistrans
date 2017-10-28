@@ -11,6 +11,8 @@
 package vos;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.*;
@@ -32,11 +34,14 @@ public class Orden
 	 */
 	@JsonProperty(value = "productosOrdenados")
 	private List<Producto> productosOrdenados;
-	/**
-	 * Atributo que contiene el cliente dueño de esta orden.
-	 */
-	@JsonProperty(value = "cliente")
-	private Cliente cliente;
+
+	@JsonProperty(value = "fecha")
+	private LocalDateTime fecha;
+	
+	public Orden() {
+		
+	}
+	
 	/**
 	 * Método constructor de la clase OrdenVos.
 	 * @param id
@@ -44,12 +49,15 @@ public class Orden
 	 * @param productosOrdenados
 	 * @param cliente
 	 */
-	public Orden(@JsonProperty(value = "id")Long id, @JsonProperty(value = "costoTotal") Double costoTotal, @JsonProperty(value = "productosOrdenados")List<Producto> productosOrdenados, @JsonProperty(value = "cliente")Cliente cliente)
+	public Orden(@JsonProperty(value = "id")Long id, 
+			@JsonProperty(value = "costoTotal") Double costoTotal,
+			@JsonProperty(value = "productosOrdenados")List<Producto> productosOrdenados,
+			@JsonProperty(value = "fecha") LocalDateTime fecha)
 	{
 		this.id = id;
 		this.costoTotal = costoTotal;
 		this.productosOrdenados = productosOrdenados;
-		this.cliente = cliente;
+		this.fecha = fecha;
 	}
 	/**
 	 * Método que obtiene el ID de este cliente frecuente.
@@ -75,6 +83,12 @@ public class Orden
 	{
 		return this.costoTotal;
 	}
+	
+	public void setCostoTotal(Double costoTotal) {
+		this.costoTotal = costoTotal;
+	}
+	
+	
 	/**
 	 * Método que obtiene la lista de productos ordenados de esta orden.
 	 * @return List<ProductoVos>, Lista de productos Ordenados en esta orden.
@@ -91,20 +105,14 @@ public class Orden
 	{
 		this.productosOrdenados = productosOrdenados;
 	}
-	/**
-	 * Método que obtiene el cliente a nombre de quien está esta orden.
-	 * @return ClienteVos, Cliente de esta orden.
-	 */
-	public Cliente getCliente()
-	{
-		return this.cliente;
+	
+	public LocalDateTime getFecha() {
+		return fecha;
 	}
-	/**
-	 * Método que establece el cliente a nombre de quien está esta orden.
-	 * @param cliente ClienteVos, nuevo cliente de esta orden.
-	 */
-	public void setCliente(Cliente cliente)
-	{
-		this.cliente = cliente;
+	
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
 	}
+
+
 }

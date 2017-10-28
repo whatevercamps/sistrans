@@ -42,7 +42,7 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON  } )
-	public Response setPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProd") Long idProd, @HeaderParam("password") String password){
+	public Response setPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProd") Long idProd, @QueryParam("password") String password){
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			ClienteFrecuente rt = tm.agregarPreferenciaClienteFrecuente(id, password, idProd);
@@ -56,7 +56,7 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response deletePreferenciaCliente(@PathParam("ClienteId") Long id,  @QueryParam("idProd") Long idProd, @HeaderParam("password") String password) {
+	public Response deletePreferenciaCliente(@PathParam("ClienteId") Long id,  @QueryParam("idProd") Long idProd, @QueryParam("password") String password) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.borrarPreferenciaClienteFrecuente(id, password, idProd);
@@ -71,7 +71,7 @@ public class ClienteFrecuenteResource {
 	@Path("{ClienteId: \\d+}/preferencias")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response modifyPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProdPasado") Long idProdPasado, @QueryParam("idProd") Long idProd, @HeaderParam("password") String password) {
+	public Response modifyPreferenciaCliente(@PathParam("ClienteId") Long id, @QueryParam("idProdPasado") Long idProdPasado, @QueryParam("idProd") Long idProd, @QueryParam("password") String password) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.borrarPreferenciaClienteFrecuente(id, password, idProdPasado);
