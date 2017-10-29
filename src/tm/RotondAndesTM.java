@@ -453,6 +453,34 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+		
+		public void despacharPedidos(ArrayList<Pedido> pedidos) throws SQLException, Exception {
+			DAOTablaPedidos dao = new DAOTablaPedidos();
+			try {
+				this.conn = darConexion();
+				dao.setConn(conn);
+				//TODO Verificar Cliente
+				dao.despacharPedidos(pedidos);
+			}catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			}finally {
+				try {
+					dao.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
 
 	}
 
@@ -702,6 +730,36 @@ public class RotondAndesTM {
 			}
 		}
 		return res;
+	}
+	
+	public void cancelarPedido(Long idPed)throws SQLException, Exception{
+
+		DAOTablaPedidos dao = new DAOTablaPedidos();
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);	
+
+			dao.cancelarPedido(idPed);
+
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 	
 

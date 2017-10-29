@@ -82,6 +82,41 @@ public class DAOTablaPedidos {
 		
 	}
 	
+	public void despacharPedidos(ArrayList<Pedido> pedidos) throws SQLException, Exception
+	{
+		for (Pedido pedido : pedidos) 
+		{
+			String sql = "UPDATE PEDIDOS SET SERVIDO = 1 WHERE ID = '" + pedido.getId()+ "'";
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+		}
+		
+		
+		
+	}
+	
+	public void cancelarPedido(Long idPed) throws SQLException, Exception
+	{
+		String  sql = "SELECT SERVIDO FROM PEDIDOS WHERE ID = '" + idPed + "'";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while(rs.next())
+		{
+			boolean servido = rs.getLong("SERVIDO")==1;
+			if(!servido)
+			{
+				sql = "DELETE FROM PEDIDOS WHERE ID = '" + idPed+ "'" ;
+				prepStmt = conn.prepareStatement(sql);
+				recursos.add(prepStmt);
+				prepStmt.executeUpdate();
+				
+			}
+		}
+		
+	}
+	
 	public  ArrayList<Pedido> registrarPedidos(Cliente cliente, ArrayList<Pedido> pedidos) throws SQLException, Exception
 	{
 		System.out.println("dsjkfsldkf");
@@ -90,16 +125,17 @@ public class DAOTablaPedidos {
 		String sql = "";
 		for (Pedido pedido : pedidos) 
 		{
-			sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE) VALUES (";
+			sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE, MESA) VALUES (";
 					sql += darIdMax() + ", ";
 					sql += cliente.getId() + ", ";
 					sql += pedido.getId() + ", ";
 					sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
 					sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
-					sql += pedido.getIdRestaurante() + ")";
+					sql += pedido.getIdRestaurante() + "','";
+					sql += pedido.getMesa() + "')";
 					PreparedStatement prepStmt = conn.prepareStatement(sql);
 					recursos.add(prepStmt);
-					prepStmt.executeQuery();
+					prepStmt.executeUpdate();
 		}
 		
 		return pedidos;

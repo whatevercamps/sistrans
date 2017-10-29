@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -72,11 +73,28 @@ public class RestauranteResource {
 	
 	@PUT
 	@Path("/pedido")
+	@Consumes( { MediaType.APPLICATION_JSON } )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response despacharPedidos(@PathParam("id") Long idRest, @PathParam("idPedido") Long idPed) {
+	public Response despacharPedidos(ArrayList<Pedido> pedidos) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {	 
-			tm.despacharPedido(idPed);
+			tm.despacharPedidos(pedidos);
+			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@DELETE
+	@Path("{id: \\d+}/pedido")
+	@Consumes( { MediaType.APPLICATION_JSON } )
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response CancelarPedido(@PathParam("idPedido")Long idPed) 
+	{
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {	 
+			tm.cancelarPedido(idPed);
 			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	
 		}catch( Exception e )
 		{

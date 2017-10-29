@@ -36,6 +36,9 @@ public class Pedido {
 	@JsonProperty(value = "idRestaurante")
 	private Long idRestaurante;
 	
+	@JsonProperty(value = "mesa")
+	private Long mesa;
+	
 
 	/**
 	 * Método constructor de la clase Pedido.
@@ -51,7 +54,8 @@ public class Pedido {
 			@JsonProperty(value = "productos") ArrayList<Producto> productos,
 			@JsonProperty(value = "fecha") LocalDateTime fecha,
 			@JsonProperty(value = "servido") Boolean servido,
-			@JsonProperty(value = "idRestaurante") Long idRestaurante
+			@JsonProperty(value = "idRestaurante") Long idRestaurante,
+			@JsonProperty(value = "idRestaurante") Long mesa
 			) {
 		this.id = id;
 		this.cliente = cliente;
@@ -103,9 +107,7 @@ public class Pedido {
 		return this.servido;
 	}
 	
-	public Long getIdRestaurante() {
-		return this.idRestaurante;
-	}
+	
 	/**
 	 * Método que establece el Cliente de este Pedido.
 	 * @param cliente Cliente, nuevo cliente dueño de este Pedido.
@@ -138,4 +140,22 @@ public class Pedido {
 	 * Método que obtiene el Restaurante de este pedido.
 	 * @return Restaurante.
 	 */
+	public Long getIdRestaurante() {
+		return this.idRestaurante;
+	}
+	
+	public void setIdRestaurnte(Long idRestaurante)
+	{
+		this.idRestaurante = idRestaurante;
+	}
+	
+	public Long getMesa() {
+		return this.mesa;
+	}
+	
+	public void setMesa(Long mesa)
+	{
+		this.mesa = mesa;
+	}
+	
 }
