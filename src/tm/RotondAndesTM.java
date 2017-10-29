@@ -362,7 +362,7 @@ public class RotondAndesTM {
 		return cliente;
 	}
 
-	public Pedido agregarPedido(Long id, Long idProd, Long idRest) throws SQLException, Exception {
+	/*public Pedido agregarPedido(Long id, Long idProd, Long idRest) throws SQLException, Exception {
 		Pedido res = null;
 		DAOTablaPedidos dao = new DAOTablaPedidos();
 		try {
@@ -392,7 +392,40 @@ public class RotondAndesTM {
 		}
 		return res;
 
+	}*/
+	
+	public ArrayList<Pedido> agregarPedidos(Long id, ArrayList<Pedido> pedidos) throws SQLException, Exception {
+		ArrayList<Pedido> res = null;
+		DAOTablaPedidos dao = new DAOTablaPedidos();
+		Cliente cliente = darCliente(id);
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);
+			res = dao.registrarPedidos(cliente, pedidos);
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return res;
+
 	}
+
+	
 
 	public void despacharPedido(Long idPed) throws SQLException, Exception {
 		DAOTablaPedidos dao = new DAOTablaPedidos();
@@ -670,6 +703,7 @@ public class RotondAndesTM {
 		}
 		return res;
 	}
+	
 
 
 }

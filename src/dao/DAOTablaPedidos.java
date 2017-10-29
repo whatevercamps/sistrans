@@ -52,7 +52,7 @@ public class DAOTablaPedidos {
 	
 	
 	
-
+/*
 	public Pedido registrarPedido(Cliente cliente, Producto producto, Long idRest) throws SQLException, Exception{
 		Long id =  darIdMax();	
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -69,9 +69,9 @@ public class DAOTablaPedidos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 		
-		return new Pedido(id, cliente, producto, localDate, false);
+		return new Pedido(id, cliente, producto, localDate, false, idRest);
 	}
-
+*/
 
 	public void despacharPedido(Long idPed) throws SQLException, Exception{
 		String sql = "UPDATE PEDIDOS SET SERVIDO = 1 WHERE ID = " + idPed;
@@ -80,5 +80,28 @@ public class DAOTablaPedidos {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 		
+	}
+	
+	public  ArrayList<Pedido> registrarPedidos(Cliente cliente, ArrayList<Pedido> pedidos) throws SQLException, Exception
+	{
+		System.out.println("dsjkfsldkf");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime localDate = LocalDateTime.now();
+		String sql = "";
+		for (Pedido pedido : pedidos) 
+		{
+			sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE) VALUES (";
+					sql += darIdMax() + ", ";
+					sql += cliente.getId() + ", ";
+					sql += pedido.getId() + ", ";
+					sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
+					sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
+					sql += pedido.getIdRestaurante() + ")";
+					PreparedStatement prepStmt = conn.prepareStatement(sql);
+					recursos.add(prepStmt);
+					prepStmt.executeQuery();
+		}
+		
+		return pedidos;
 	}
 }

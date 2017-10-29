@@ -69,6 +69,20 @@ public class RestauranteResource {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	@PUT
+	@Path("/pedido")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response despacharPedidos(@PathParam("id") Long idRest, @PathParam("idPedido") Long idPed) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {	 
+			tm.despacharPedido(idPed);
+			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 
 
 }

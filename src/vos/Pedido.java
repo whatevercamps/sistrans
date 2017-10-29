@@ -1,7 +1,7 @@
 package vos;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.*;
 
@@ -20,7 +20,7 @@ public class Pedido {
 	 * Atributo que contiene el producto pedido.
 	 */
 	@JsonProperty(value = "producto")
-	private Producto producto; 
+	private ArrayList<Producto> productos; 
 	/**
 	 * Atributo que contiene la fecha de este pedido.
 	 */
@@ -32,6 +32,9 @@ public class Pedido {
 	 */
 	@JsonProperty(value = "servido")
 	private Boolean servido;
+	
+	@JsonProperty(value = "idRestaurante")
+	private Long idRestaurante;
 	
 
 	/**
@@ -45,15 +48,17 @@ public class Pedido {
 	 */
 	public Pedido(@JsonProperty(value = "id") Long id, 
 			@JsonProperty(value = "cliente") Cliente cliente, 
-			@JsonProperty(value = "producto") Producto producto,
+			@JsonProperty(value = "productos") ArrayList<Producto> productos,
 			@JsonProperty(value = "fecha") LocalDateTime fecha,
-			@JsonProperty(value = "servido") Boolean servido
+			@JsonProperty(value = "servido") Boolean servido,
+			@JsonProperty(value = "idRestaurante") Long idRestaurante
 			) {
 		this.id = id;
 		this.cliente = cliente;
-		this.producto = producto;
+		this.productos= productos;
 		this.fecha = fecha; 
 		this.servido = servido;
+		this.idRestaurante = idRestaurante;
 	}
 	/**
 	 * Método que obtiene el ID del pedido.
@@ -80,8 +85,8 @@ public class Pedido {
 	 * Método que obtiene el Producto pedido en este Pedido.
 	 * @return Producto, producto del pedido.
 	 */
-	public Producto getProducto() {
-		return this.producto;
+	public ArrayList<Producto> getProducto() {
+		return this.productos;
 	}
 	/**
 	 * Método que obtiene la fecha de este Pedido.
@@ -97,6 +102,10 @@ public class Pedido {
 	public Boolean getServido() {
 		return this.servido;
 	}
+	
+	public Long getIdRestaurante() {
+		return this.idRestaurante;
+	}
 	/**
 	 * Método que establece el Cliente de este Pedido.
 	 * @param cliente Cliente, nuevo cliente dueño de este Pedido.
@@ -108,8 +117,8 @@ public class Pedido {
 	 * Método que establece el Producto en este Pedido.
 	 * @param producto Producto, nuevo Producto del Pedido.
 	 */
-	public void setProducto(Producto producto) {
-		this.producto = producto; 
+	public void setProducto(ArrayList<Producto> productos) {
+		this.productos = productos; 
 	}
 	/**
 	 * Método que establece la fecha de este Pedido.
