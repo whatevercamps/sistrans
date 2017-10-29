@@ -1,44 +1,107 @@
 package vos;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 
 import org.codehaus.jackson.annotate.*;
 
 public class Pedido {
+
+	private class RestaurantePedido {
+
+		@JsonProperty(value = "idRest")
+		private Long idRest;
+
+		@JsonProperty(value = "nameRest")
+		private String nameRest;
+
+		public RestaurantePedido(
+				@JsonProperty(value = "idRest") Long idRest,
+				@JsonProperty(value = "nameRest") String nameRest) {
+			this.idRest = idRest;
+			this.nameRest = nameRest;
+		}
+		
+		public Long getId() {
+			return this.idRest;
+		}
+		
+		public void setId(Long id) {
+			this.idRest = id;
+		}
+		
+		public String getName() {
+			return nameRest;
+		}
+		
+		public void setName(String name) {
+			this.nameRest = name;
+		}
+	};
+
+	private class ClientePedido {
+		@JsonProperty(value = "idCliente")
+		private Long idCliente;
+
+		@JsonProperty(value = "nameCliente")
+		private String nameCliente;
+		
+		public ClientePedido(
+				@JsonProperty(value = "idCliente") Long idCliente,
+				@JsonProperty(value = "nameCliente") String nameCliente) {
+			
+			this.idCliente = idCliente;
+			this.nameCliente = nameCliente;
+		}
+		
+		public Long getId() {
+			return this.idCliente;
+		}
+		
+		public void setId(Long id) {
+			this.idCliente = id;
+		}
+		
+		public String getName() {
+			return this.nameCliente;
+		}
+		
+		public void setName(String name) {
+			this.nameCliente = name;
+		}
+		
+	};
+
+
 	/**
 	 * Atributo que contiene el ID de este pedido.
 	 */
 	@JsonProperty(value = "id")
 	private Long id;
-	/**
-	 * Atributo que contiene el cliente dueño de este pedido.
-	 */
-	@JsonProperty(value = "cliente")
-	private Cliente cliente;
+
 	/**
 	 * Atributo que contiene el producto pedido.
 	 */
 	@JsonProperty(value = "producto")
-	private ArrayList<Producto> productos; 
+	private Producto producto; 
 	/**
 	 * Atributo que contiene la fecha de este pedido.
 	 */
 	@JsonProperty(value = "fecha")
 	private LocalDateTime fecha;
-	
+
 	/**
 	 * Atributo que contiene si este pedido ya ha sido servido o no.
 	 */
 	@JsonProperty(value = "servido")
 	private Boolean servido;
-	
-	@JsonProperty(value = "idRestaurante")
-	private Long idRestaurante;
-	
-	@JsonProperty(value = "mesa")
-	private Long mesa;
-	
+
+
+	@JsonProperty(value = "restaurantePedido")
+	private RestaurantePedido restaurantePedido;
+
+	@JsonProperty(value = "clientePedido")
+	private ClientePedido cliente;
 
 	/**
 	 * Método constructor de la clase Pedido.
@@ -50,20 +113,22 @@ public class Pedido {
 	 * @param restaurante Restaurante, restaurante dueño del pedido.
 	 */
 	public Pedido(@JsonProperty(value = "id") Long id, 
-			@JsonProperty(value = "cliente") Cliente cliente, 
-			@JsonProperty(value = "productos") ArrayList<Producto> productos,
+			@JsonProperty(value = "idCliente") Long idCliente,
+			@JsonProperty(value = "nameCliente") String nameCliente,
+			@JsonProperty(value = "producto") Producto producto,
 			@JsonProperty(value = "fecha") LocalDateTime fecha,
 			@JsonProperty(value = "servido") Boolean servido,
-			@JsonProperty(value = "idRestaurante") Long idRestaurante,
-			@JsonProperty(value = "idRestaurante") Long mesa
+			@JsonProperty(value = "idRest") Long idRest,
+			@JsonProperty(value = "nameRest") String nameRest
 			) {
 		this.id = id;
-		this.cliente = cliente;
-		this.productos= productos;
+		this.cliente = new ClientePedido(idCliente, nameCliente);
+		this.producto = producto;
 		this.fecha = fecha; 
 		this.servido = servido;
-		this.idRestaurante = idRestaurante;
+		this.restaurantePedido = new RestaurantePedido(idRest, nameRest);
 	}
+	public Pedido() {}
 	/**
 	 * Método que obtiene el ID del pedido.
 	 * @return
@@ -78,19 +143,13 @@ public class Pedido {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	/**
-	 * Método que obtiene el cliente dueño de este pedido.
-	 * @return Cliente, cliente del Pedido.
-	 */
-	public Cliente getCliente() {
-		return this.cliente;
-	}
+
 	/**
 	 * Método que obtiene el Producto pedido en este Pedido.
 	 * @return Producto, producto del pedido.
 	 */
-	public ArrayList<Producto> getProducto() {
-		return this.productos;
+	public Producto getProducto() {
+		return this.producto;
 	}
 	/**
 	 * Método que obtiene la fecha de este Pedido.
@@ -109,18 +168,11 @@ public class Pedido {
 	
 	
 	/**
-	 * Método que establece el Cliente de este Pedido.
-	 * @param cliente Cliente, nuevo cliente dueño de este Pedido.
-	 */
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente; 
-	}
-	/**
 	 * Método que establece el Producto en este Pedido.
 	 * @param producto Producto, nuevo Producto del Pedido.
 	 */
-	public void setProducto(ArrayList<Producto> productos) {
-		this.productos = productos; 
+	public void setProducto(Producto producto) {
+		this.producto = producto; 
 	}
 	/**
 	 * Método que establece la fecha de este Pedido.
@@ -140,22 +192,43 @@ public class Pedido {
 	 * Método que obtiene el Restaurante de este pedido.
 	 * @return Restaurante.
 	 */
-	public Long getIdRestaurante() {
-		return this.idRestaurante;
+	public Long getIdRest() {
+		return this.restaurantePedido.getId();
 	}
 	
-	public void setIdRestaurnte(Long idRestaurante)
-	{
-		this.idRestaurante = idRestaurante;
+	public void setIdRest(Long idRest) {
+		this.restaurantePedido.setId(idRest);
 	}
 	
-	public Long getMesa() {
-		return this.mesa;
+	public String getNameRest() {
+		return this.restaurantePedido.getName();
 	}
 	
-	public void setMesa(Long mesa)
-	{
-		this.mesa = mesa;
+	public void setNameRest(String nameRest) {
+		this.restaurantePedido.setName(nameRest);
 	}
 	
+	public Long getIdCliente() {
+		return this.cliente.getId();
+	}
+	
+	public void setIdCliente(Long idCliente) {
+		this.cliente.setId(idCliente);
+	}
+	
+	public String getNameCliente() {
+		return this.cliente.getName();
+	}
+	
+	public void setNameCliente(String nameCliente) {
+		this.cliente.setName(nameCliente);
+	}
+	
+	public void setCliente(Long idCliente, String nameCliente) {
+		this.cliente = new ClientePedido(idCliente, nameCliente);
+	}
+	
+	public void setRestaurante(Long idRest, String nameRest) {
+		this.restaurantePedido = new RestaurantePedido(idRest, nameRest);
+	}
 }

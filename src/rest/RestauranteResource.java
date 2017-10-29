@@ -23,10 +23,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tm.RotondAndesTM;
 import vos.Pedido;
 import vos.Producto;
+import vos.Restaurante;
 
 @Path("restaurantes")
 public class RestauranteResource {
 
+	
+	
+	
 	@Context
 	private ServletContext context;
 
@@ -72,14 +76,14 @@ public class RestauranteResource {
 	}
 	
 	@PUT
-	@Path("/pedido")
+	@Path("{id: \\\\d+}/pedidos")
 	@Consumes( { MediaType.APPLICATION_JSON } )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response despacharPedidos(ArrayList<Pedido> pedidos) {
+	public Response despacharPedidosMesa(@PathParam("id") Long idRest, @QueryParam("idMesa") Long idMesa) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {	 
-			tm.despacharPedidos(pedidos);
-			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	
+		try {	
+			tm.despacharPedidosMesa(idMesa, idMesa);
+			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedidos despachado \"}" ).build();	
 		}catch( Exception e )
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );

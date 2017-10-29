@@ -2,6 +2,7 @@ package rest;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -32,71 +33,63 @@ public class ClienteResorce {
 
 	@XmlRootElement
 	public static class RequestBody {
-	    @XmlElement Long idProd;
-	    @XmlElement Long idRestProd;
+		@XmlElement Long[][] idsPedidos;
 	}
-	
-	
+
+
 	@Context
 	private ServletContext context;
-	
+
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
-	
+
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
-	
 
-	/*@POST
-	@Path("{id: \\d+}/pedidos")
+
+	@POST
+	@Path("{id: \\d+}/pedido")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response agregarPedido(@PathParam("id") Long id, @QueryParam("idProd") Long idProd, @QueryParam("idRest") Long idRestProd) throws SQLException, Exception {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		
+
 		Restaurante res = tm.darRestaurante(idRestProd);
 		if(res == null) {
 			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL RESTAURANTE" + "\"}" ).build( );
 		}
-		
-		
-		
+
+
+
 		try {
 			Pedido pedido = tm.agregarPedido(id, idProd, res.getId());
-			 
-			return Response.status( 200 ).entity( pedido ).build();	
-		}catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}*/
-	
-	@POST
-	@Path("{id: \\d+}/pedidos")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces( MediaType.APPLICATION_JSON )
-	public Response agregarPedidos(@PathParam("id") Long id, ArrayList<Pedido> pedidos) throws SQLException, Exception {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		System.out.println("entro");
-		
-		ArrayList<Pedido> res = tm.agregarPedidos(id, pedidos);
-		if(res == null) {
-			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL RESTAURANTE" + "\"}" ).build( );
-		}
-		
-		
-		
-		try {
-			ArrayList<Pedido> pedido = tm.agregarPedidos(id, pedidos);
-			 
+
 			return Response.status( 200 ).entity( pedido ).build();	
 		}catch( Exception e )
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
-	
-	
+	 
+
+	@POST
+	@Path("{id: \\d+}/pedidos")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces( MediaType.APPLICATION_JSON )
+	public Response agregarPedidos(@PathParam("id") Long id, RequestBody request) throws SQLException, Exception {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+
+		try {
+			List<Pedido> pedidosMesa = tm.agregarPedidosMesa(id, request.idsPedidos);
+
+			return Response.status( 200 ).entity( pedidosMesa ).build();	
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+
+
+
 }

@@ -362,7 +362,7 @@ public class RotondAndesTM {
 		return cliente;
 	}
 
-	/*public Pedido agregarPedido(Long id, Long idProd, Long idRest) throws SQLException, Exception {
+	public Pedido agregarPedido(Long id, Long idProd, Long idRest) throws SQLException, Exception {
 		Pedido res = null;
 		DAOTablaPedidos dao = new DAOTablaPedidos();
 		try {
@@ -370,7 +370,8 @@ public class RotondAndesTM {
 			dao.setConn(conn);
 			Cliente cliente = darCliente(id);
 			Producto producto = darProducto(idProd, idRest);
-			res = dao.registrarPedido(cliente, producto, idRest);
+			Restaurante rest = darRestaurante(idRest);
+			res = dao.registrarPedido(cliente, producto, rest);
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -391,17 +392,16 @@ public class RotondAndesTM {
 			}
 		}
 		return res;
-
-	}*/
-	
-	public ArrayList<Pedido> agregarPedidos(Long id, ArrayList<Pedido> pedidos) throws SQLException, Exception {
-		ArrayList<Pedido> res = null;
-		DAOTablaPedidos dao = new DAOTablaPedidos();
-		Cliente cliente = darCliente(id);
+	}
+	public List<Pedido> agregarPedidosMesa(Long id, Long[][] pedidos) throws SQLException, Exception {
+		List<Pedido> res = new ArrayList<Pedido>();
 		try {
 			this.conn = darConexion();
-			dao.setConn(conn);
-			res = dao.registrarPedidos(cliente, pedidos);
+			for(Long[] pedido : pedidos) {
+				res.add(agregarPedido(id, pedido[0], pedido[1]));
+			}
+
+
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -412,7 +412,6 @@ public class RotondAndesTM {
 			throw e;
 		}finally {
 			try {
-				dao.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -425,7 +424,7 @@ public class RotondAndesTM {
 
 	}
 
-	
+
 
 	public void despacharPedido(Long idPed) throws SQLException, Exception {
 		DAOTablaPedidos dao = new DAOTablaPedidos();
@@ -454,14 +453,18 @@ public class RotondAndesTM {
 			}
 		}
 	}
-		
-		public void despacharPedidos(ArrayList<Pedido> pedidos) throws SQLException, Exception {
+	
+		public void despacharPedidosMesa(Long idMesa, Long idRest) throws SQLException, Exception {
 			DAOTablaPedidos dao = new DAOTablaPedidos();
 			try {
 				this.conn = darConexion();
 				dao.setConn(conn);
-				//TODO Verificar Cliente
-				dao.despacharPedidos(pedidos);
+				Restaurante rest = darRestaurante(idRest);
+				List<Pedido> pedidosMesa = darPedidosMesa(idMesa, rest);
+				for(Pedido ped : pedidosMesa) {
+					despacharPedido(ped.getId());
+				}
+				
 			}catch (SQLException e) {
 				System.err.println("SQLException:" + e.getMessage());
 				e.printStackTrace();
@@ -483,6 +486,47 @@ public class RotondAndesTM {
 			}
 
 	}
+	 
+	private List<Pedido> darPedidosMesa(Long idMesa, Restaurante rest) throws SQLException, Exception {
+		List<Pedido> pedidos; 
+		DAOTablaPedidos daoPedidos = new DAOTablaPedidos();
+		try {
+
+			this.conn = darConexion();
+
+			daoPedidos.setConn(conn);
+			pedidos = daoPedidos.darPedidos(DAOTablaPedidos.SIN_DESPACHAR_DE_MESA, idMesa.toString());
+
+			for (Pedido pedido : pedidos) {
+				pedido.setRestaurante(rest.getId(), rest.getName());
+				String clienteName = darCliente(pedido.getIdCliente()).getNombre();
+				pedido.setNameCliente(clienteName);
+				Producto prod = darProducto(pedido.getProducto().getId(), pedido.getIdRest());
+				pedido.setProducto(prod);
+			}
+
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedidos.cerrarRecursos();
+
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedidos; 
+		}
 
 	public List<Producto> darProductos() throws SQLException, Exception {
 		List<Producto> productos; 
@@ -659,25 +703,22 @@ public class RotondAndesTM {
 			daoZona.setConn(conn);
 			zona = daoZona.darZona(id);
 			System.out.println("after dao ------> " + zona.getId() + " || " + zona.getNombre());
-			if(zona == null) {
-				throw new Exception("NO EXISTE LA ZONA");
-			}
+
 			//AGREGACIÓN DE RESTAURANTES A ZONA
+			if(zona != null) {
+				daoRes.setConn(conn);
+				List<Restaurante> restaurantes = daoRes.darRestaurantesDeZona(id);
 
-			daoRes.setConn(conn);
-			List<Restaurante> restaurantes = daoRes.darRestaurantesDeZona(id);
-
-			//AGREGACIÓN DE PRODUCTOS A RESTAURANTES
-			if(restaurantes != null && !restaurantes.isEmpty())
-			{
-				daoProd.setConn(conn);
-				for(Restaurante rest : restaurantes) {
-					rest.setProductos(daoProd.darProductosPor(DAOTablaProductos.RESTAURANTE, rest.getId().toString()));
+				//AGREGACIÓN DE PRODUCTOS A RESTAURANTES
+				if(restaurantes != null && !restaurantes.isEmpty())
+				{
+					daoProd.setConn(conn);
+					for(Restaurante rest : restaurantes) {
+						rest.setProductos(daoProd.darProductosPor(DAOTablaProductos.RESTAURANTE, rest.getId().toString()));
+					}
+					zona.setRestaurantes(restaurantes);
 				}
-				zona.setRestaurantes(restaurantes);
 			}
-
-
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -731,7 +772,7 @@ public class RotondAndesTM {
 		}
 		return res;
 	}
-	
+
 	public void cancelarPedido(Long idPed)throws SQLException, Exception{
 
 		DAOTablaPedidos dao = new DAOTablaPedidos();
@@ -761,7 +802,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 
 
 }

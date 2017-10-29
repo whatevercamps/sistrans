@@ -7,12 +7,17 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Cliente;
 import vos.Pedido;
 import vos.Producto;
+import vos.Restaurante;
 
 public class DAOTablaPedidos {
+
+	public static final int SIN_DESPACHAR_DE_MESA = 1;
+
 	private ArrayList<Object> recursos;
 	private Connection conn;
 
@@ -49,11 +54,11 @@ public class DAOTablaPedidos {
 		return 0L;
 	}
 
-	
-	
-	
-/*
-	public Pedido registrarPedido(Cliente cliente, Producto producto, Long idRest) throws SQLException, Exception{
+
+
+
+
+	public Pedido registrarPedido(Cliente cliente, Producto producto, Restaurante rest) throws SQLException, Exception{
 		Long id =  darIdMax();	
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime localDate = LocalDateTime.now();
@@ -63,39 +68,29 @@ public class DAOTablaPedidos {
 		sql += producto.getId() + ", ";
 		sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
 		sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
-		sql += idRest + ")";
+		sql += rest.getId() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
-		return new Pedido(id, cliente, producto, localDate, false, idRest);
+
+
+
+		return new Pedido(id, cliente.getId(), cliente.getNombre(), producto, localDate, false, rest.getId(), rest.getName());
 	}
-*/
+
 
 	public void despacharPedido(Long idPed) throws SQLException, Exception{
 		String sql = "UPDATE PEDIDOS SET SERVIDO = 1 WHERE ID = " + idPed;
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
+
 	}
-	
-	public void despacharPedidos(ArrayList<Pedido> pedidos) throws SQLException, Exception
-	{
-		for (Pedido pedido : pedidos) 
-		{
-			String sql = "UPDATE PEDIDOS SET SERVIDO = 1 WHERE ID = '" + pedido.getId()+ "'";
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
-		}
-		
-		
-		
-	}
-	
+
+
+
 	public void cancelarPedido(Long idPed) throws SQLException, Exception
 	{
 		String  sql = "SELECT SERVIDO FROM PEDIDOS WHERE ID = '" + idPed + "'";
@@ -111,12 +106,12 @@ public class DAOTablaPedidos {
 				prepStmt = conn.prepareStatement(sql);
 				recursos.add(prepStmt);
 				prepStmt.executeUpdate();
-				
+
 			}
 		}
-		
+
 	}
-	
+	/*
 	public  ArrayList<Pedido> registrarPedidos(Cliente cliente, ArrayList<Pedido> pedidos) throws SQLException, Exception
 	{
 		System.out.println("dsjkfsldkf");
@@ -137,7 +132,45 @@ public class DAOTablaPedidos {
 					recursos.add(prepStmt);
 					prepStmt.executeUpdate();
 		}
-		
+
+		return pedidos;
+	}
+	 */
+
+
+	public List<Pedido> darPedidos(int filtro, String parametro)throws SQLException, Exception {
+		List<Pedido> pedidos = new ArrayList<Pedido>();
+		String sentencia = "SELECT * FROM PEDIDOS";
+
+		switch(filtro) {
+
+		case SIN_DESPACHAR_DE_MESA:
+			sentencia += " WHERE SERVIDO = 0 AND MESA = " + Integer.parseInt(parametro);
+			break;
+
+		default:
+			break;
+		}
+
+		PreparedStatement stamnt = conn.prepareStatement(sentencia);
+		recursos.add(stamnt);
+		ResultSet rs = stamnt.executeQuery();
+		while(rs.next()) {
+			Pedido pedido = new Pedido();
+			pedido.setId(rs.getLong("ID"));
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime localDate = LocalDateTime.parse(rs.getString("FECHA"), dtf);
+			
+			pedido.setFecha(localDate);
+			pedido.setServido(rs.getBoolean("SERVIDO"));
+			pedido.setCliente(rs.getLong("ID_CLIENTE"), new String("holi"));
+			Producto prodTemp = new Producto();
+			prodTemp.setId(rs.getLong("ID_PRODUCTO"));
+			pedido.setProducto(prodTemp);
+			pedidos.add(pedido);
+		}
+		System.out.println("------------> sentencia:  " + sentencia);
 		return pedidos;
 	}
 }
