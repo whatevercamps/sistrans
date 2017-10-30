@@ -18,6 +18,8 @@ public class DAOTablaPedidos {
 
 	public static final int SIN_DESPACHAR_DE_MESA = 1;
 
+	public static final int PEDIDO_POR_ID = 0;
+
 	private ArrayList<Object> recursos;
 	private Connection conn;
 
@@ -62,13 +64,14 @@ public class DAOTablaPedidos {
 		Long id =  darIdMax();	
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime localDate = LocalDateTime.now();
-		String sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE) VALUES (";
+		String sql = "INSERT INTO PEDIDOS (ID, ID_CLIENTE, ID_PRODUCTO, FECHA, SERVIDO, ID_ORDEN, ID_RESTAURANTE, MESA) VALUES (";
 		sql += id + ", ";
 		sql += cliente.getId() + ", ";
 		sql += producto.getId() + ", ";
 		sql += "TIMESTAMP '" + dtf.format(localDate) + "', 0, ";
-		sql += cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId() + ", ";
-		sql += rest.getId() + ")";
+		sql += ((cliente.getOrdenes().isEmpty())? "1" : cliente.getOrdenes().get(cliente.getOrdenes().size()-1).getId()) + ", ";
+		sql += rest.getId() + ", ";
+		sql += cliente.getMesa()+ ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -147,7 +150,11 @@ public class DAOTablaPedidos {
 		case SIN_DESPACHAR_DE_MESA:
 			sentencia += " WHERE SERVIDO = 0 AND MESA = " + Integer.parseInt(parametro);
 			break;
-
+			
+		case PEDIDO_POR_ID:
+			sentencia += "WHERE ID = " + Integer.parseInt(parametro);
+			break;
+			
 		default:
 			break;
 		}
@@ -165,9 +172,12 @@ public class DAOTablaPedidos {
 			pedido.setFecha(localDate);
 			pedido.setServido(rs.getBoolean("SERVIDO"));
 			pedido.setCliente(rs.getLong("ID_CLIENTE"), new String("holi"));
+			
 			Producto prodTemp = new Producto();
 			prodTemp.setId(rs.getLong("ID_PRODUCTO"));
 			pedido.setProducto(prodTemp);
+
+			pedido.setRestaurante(rs.getLong("ID_RESTAURANTE"), new String("holi"));
 			pedidos.add(pedido);
 		}
 		System.out.println("------------> sentencia:  " + sentencia);

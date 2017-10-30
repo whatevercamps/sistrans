@@ -18,7 +18,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import tm.RotondAndesTM;
+import vos.Cliente;
 import vos.Pedido;
+import vos.Producto;
 import vos.Restaurante;
 
 
@@ -60,10 +62,18 @@ public class ClienteResorce {
 			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL RESTAURANTE" + "\"}" ).build( );
 		}
 
+		Cliente cliente = tm.darCliente(id);
+		if(cliente == null) {
+			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL CLIENTE" + "\"}" ).build( );
+		}
 
+		Producto prod = tm.darProducto(idProd, idRestProd);
+		if(prod == null) {
+			return Response.status( 404 ).entity( "{ \"ERROR\": \""+ "NO SE ENCUENTRA EL PRODUCTO" + "\"}" ).build( );
+		}
 
 		try {
-			Pedido pedido = tm.agregarPedido(id, idProd, res.getId());
+			Pedido pedido = tm.agregarPedido(cliente, prod, res);
 
 			return Response.status( 200 ).entity( pedido ).build();	
 		}catch( Exception e )

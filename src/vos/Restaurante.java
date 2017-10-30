@@ -64,6 +64,8 @@ public class Restaurante {
 //		this.platosFuertes = platosFuertes;
 //		this.postres = postres;
 	}
+	public Restaurante() {
+	}
 	/**
 	 * Método que obtiene el ID de un Restaurante.
 	 * @return Long, ID del restaurante.

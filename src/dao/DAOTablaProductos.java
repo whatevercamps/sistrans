@@ -68,22 +68,21 @@ public class DAOTablaProductos {
 
 
 	public Producto darProducto(Long id, Long idRest) throws SQLException, Exception {
-		Producto producto = new Producto();
-
 		String sqlProductoPorId = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE WHERE ID_PROD = ID AND ID_PROD = " + id + " AND ID_REST =" + idRest; 
 		PreparedStatement stProductoPorId = conn.prepareStatement(sqlProductoPorId);
 		recursos.add(stProductoPorId);
 		ResultSet rs = stProductoPorId.executeQuery();
 
 		if (rs.next()) {
-			producto.setId(rs.getLong("ID"));
+			Producto producto = new Producto();
+			producto.setId(rs.getLong("ID_PROD"));
 			producto.setNombre(rs.getString("NAME"));
 			producto.setDescripcionEspaniol(rs.getString("DESCRIPCION"));
 			producto.setDescripcionIngles(rs.getString("DESCRIPTION"));
 			producto.setCategoria(rs.getString("CATEGORIA"));
-			producto.setCostoDeProduccion(rs.getDouble("COSTO_PRODUCCION"));
 			producto.setPrecio(rs.getDouble("PRECIO"));
-			producto.setProductosEquivalentes(darProductosEquivalentes(producto.getId(), idRest));
+			producto.setCostoDeProduccion(rs.getDouble("COSTO_PRODUCCION"));
+			producto.setProductosEquivalentes(darProductosEquivalentes(producto.getId(), rs.getLong("ID_REST")));
 			
 			return producto;
 		}

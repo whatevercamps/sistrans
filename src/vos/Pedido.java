@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import org.codehaus.jackson.annotate.*;
 
 public class Pedido {
-
-	private class RestaurantePedido {
+	
+	public class RestaurantePedido {
 
 		@JsonProperty(value = "idRest")
 		private Long idRest;
@@ -38,8 +38,8 @@ public class Pedido {
 			this.nameRest = name;
 		}
 	};
-
-	private class ClientePedido {
+	
+	public class ClientePedido {
 		@JsonProperty(value = "idCliente")
 		private Long idCliente;
 

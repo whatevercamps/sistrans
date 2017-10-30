@@ -24,7 +24,7 @@ import tm.RotondAndesTM;
 import vos.Cliente;
 import vos.ClienteFrecuente;
 @Path("clientes-frecuentes")
-public class ClienteFrecuenteResource {
+public class ClienteFrecuenteResource extends ClienteResorce {
 
 
 	@XmlRootElement
