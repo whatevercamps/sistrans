@@ -25,7 +25,7 @@ import vos.Pedido;
 import vos.Producto;
 import vos.Restaurante;
 
-@Path("restaurantes")
+@Path("restaurante")
 public class RestauranteResource {
 
 	
@@ -61,7 +61,7 @@ public class RestauranteResource {
 
 
 
-	@POST
+	@PUT
 	@Path("{id: \\d+}/pedidos/{idPedido: \\d+}")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response despacharPedido(@PathParam("id") Long idRest, @PathParam("idPedido") Long idPed) {
@@ -76,13 +76,13 @@ public class RestauranteResource {
 	}
 	
 	@PUT
-	@Path("{id: \\\\d+}/pedidos")
+	@Path("{id: \\d+}/pedidos")
 	@Consumes( { MediaType.APPLICATION_JSON } )
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response despacharPedidosMesa(@PathParam("id") Long idRest, @QueryParam("idMesa") Long idMesa) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {	
-			tm.despacharPedidosMesa(idMesa, idMesa);
+			tm.despacharPedidosMesa(idMesa, idRest);
 			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedidos despachado \"}" ).build();	
 		}catch( Exception e )
 		{
