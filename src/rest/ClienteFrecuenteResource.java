@@ -23,7 +23,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tm.RotondAndesTM;
 import vos.Cliente;
 import vos.ClienteFrecuente;
-@Path("clientes-frecuentes")
+@Path("cliente-frecuente")
 public class ClienteFrecuenteResource extends ClienteResorce {
 
 
