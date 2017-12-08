@@ -40,7 +40,7 @@ public class DAOTablaClientes {
 	public List<Cliente> darClientes() throws SQLException, Exception {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
-		String sentencia = "SELECT * FROM CLIENTES";
+		String sentencia = "SELECT * FROM CLIENTES FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement stamnt = conn.prepareStatement(sentencia);
 		recursos.add(stamnt);
 		ResultSet rs = stamnt.executeQuery();
@@ -65,7 +65,7 @@ public class DAOTablaClientes {
 	public Cliente darCliente(Long id) throws SQLException {
 		Cliente clientePorId = null;
 
-		String sqlClientePorId = "SELECT * FROM CLIENTES WHERE ID =" + id; 
+		String sqlClientePorId = "SELECT * FROM CLIENTES WHERE ID = " + id + " FETCH FIRST 100 ROWS ONLY"; 
 		PreparedStatement stClientePorId = conn.prepareStatement(sqlClientePorId);
 		recursos.add(stClientePorId);
 		ResultSet rsClientePorId = stClientePorId.executeQuery();

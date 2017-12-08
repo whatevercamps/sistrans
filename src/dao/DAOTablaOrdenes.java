@@ -43,8 +43,8 @@ public class DAOTablaOrdenes {
 		
 		List<Orden> ordenes = new ArrayList<Orden>();
 		
-		String sql = "SELECT * FROM PEDIDOS, ORDENES WHERE PEDIDOS.ID_ORDEN = ORDENES.ID AND ID_CLIENTE = " + idCliente;
-		
+		String sql = "SELECT * FROM PEDIDOS, ORDENES WHERE PEDIDOS.ID_ORDEN = ORDENES.ID AND ID_CLIENTE = " + idCliente + " FETCH FIRST 100 ROWS ONLY";
+		System.out.println("sentencia darOrdenesClientes: " + sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();

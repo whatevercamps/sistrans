@@ -21,8 +21,7 @@ public class DAOTablaProductos {
 	public static final int RESTAURANTE = 1;
 	public static final int CATEGORIA = 2;
 	public static final int RANGO_PRECIOS= 3;
-	public static final int TIPO = 4;
-	public static final int ORDEN = 5;
+	public static final int ORDEN = 4;
 
 	public DAOTablaProductos() {
 		recursos = new ArrayList<Object>();		
@@ -48,7 +47,7 @@ public class DAOTablaProductos {
 	public List<Producto> darProductos() throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
-		String sentencia = "SELECT * FROM PRODUCTOS";
+		String sentencia = "SELECT * FROM PRODUCTOS FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement stamnt = conn.prepareStatement(sentencia);
 		recursos.add(stamnt);
 		ResultSet rs = stamnt.executeQuery();
@@ -68,7 +67,7 @@ public class DAOTablaProductos {
 
 
 	public Producto darProducto(Long id, Long idRest) throws SQLException, Exception {
-		String sqlProductoPorId = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE WHERE ID_PROD = ID AND ID_PROD = " + id + " AND ID_REST =" + idRest; 
+		String sqlProductoPorId = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE WHERE ID_PROD = ID AND ID_PROD = " + id + " AND ID_REST =" + idRest + " FETCH FIRST 100 ROWS ONLY"; 
 		PreparedStatement stProductoPorId = conn.prepareStatement(sqlProductoPorId);
 		recursos.add(stProductoPorId);
 		ResultSet rs = stProductoPorId.executeQuery();
@@ -92,7 +91,7 @@ public class DAOTablaProductos {
 
 	private List<ProductoBase> darProductosEquivalentes(Long id, Long idRest)  throws SQLException, Exception {
 		String sql = "SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE, PRODUCTOSSIMILARES WHERE ID = ID_PROD AND ID_PROD2 = ID_PROD AND ID_REST = "; 
-		sql += idRest + " AND ID_PROD1 = "  + id; 
+		sql += idRest + " AND ID_PROD1 = "  + id + " FETCH FIRST 100 ROWS ONLY"; 
 		System.out.println(sql);
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
@@ -133,6 +132,7 @@ public class DAOTablaProductos {
 		case RANGO_PRECIOS:
 			String[] precios = parametro.split(",");
 			sentencia += "AND PRECIO >= " + Integer.parseInt(precios[0]) + " AND  PRECIO <= " + Integer.parseInt(precios[1]);
+			break;
 			
 		case ORDEN: 
 			sentencia =" SELECT * FROM PRODUCTOS, PRODUCTO_RESTAURANTE, PEDIDOS ";
@@ -141,6 +141,7 @@ public class DAOTablaProductos {
 			break;
 		}
 
+		sentencia += " FETCH FIRST 100 ROWS ONLY"; 
 		PreparedStatement stamnt = conn.prepareStatement(sentencia);
 		recursos.add(stamnt);
 		ResultSet rs = stamnt.executeQuery();
@@ -166,7 +167,7 @@ public class DAOTablaProductos {
 	public List<ProductoBase> darPreferencias(Long id)  throws SQLException, Exception{
 		List<ProductoBase> preferencias = new ArrayList<>();
 		
-		String sql = "SELECT * FROM PRODUCTOS, PREFERENCIAS WHERE ID_PRODUCTO = ID AND ID_CLIENTEFRECUENTE = " + id;
+		String sql = "SELECT * FROM PRODUCTOS, PREFERENCIAS WHERE ID_PRODUCTO = ID AND ID_CLIENTEFRECUENTE = " + id + " FETCH FIRST 100 ROWS ONLY";
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

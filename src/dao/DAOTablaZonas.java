@@ -106,7 +106,7 @@ public class DAOTablaZonas
 	 */
 	public void addZona(Zona zona) throws SQLException, Exception{
 
-		String sqlZonaConID = "SELECT * FROM ZONAS WHERE ID = " + zona.getId();
+		String sqlZonaConID = "SELECT * FROM ZONAS WHERE ID = " + zona.getId() + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement prepStmtID= conn.prepareStatement(sqlZonaConID);
 		recursos.add(prepStmtID);
 		ResultSet rsID = prepStmtID.executeQuery();
@@ -127,7 +127,7 @@ public class DAOTablaZonas
 
 
 		if(zona.getCondiciones() != null){
-			String sqlCondiciones = "SELECT * FROM CONDICIONESTECNICAS";
+			String sqlCondiciones = "SELECT * FROM CONDICIONESTECNICAS FETCH FIRST 100 ROWS ONLY";
 
 			PreparedStatement prepStmtCondiciones = conn.prepareStatement(sqlCondiciones);
 			recursos.add(prepStmtCondiciones);
@@ -150,7 +150,7 @@ public class DAOTablaZonas
 
 		Zona zona = null;
 
-		String sql = "SELECT * FROM ZONAS WHERE ID = " + id;
+		String sql = "SELECT * FROM ZONAS WHERE ID = " + id + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
 

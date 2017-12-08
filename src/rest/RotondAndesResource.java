@@ -15,8 +15,10 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import dao.DAOTablaPedidos;
 import tm.RotondAndesTM;
 import vos.Cliente;
+import vos.Informe;
 import vos.Producto;
 import vos.ProductoBase;
 
@@ -78,6 +80,22 @@ public class RotondAndesResource {
 		}
 	}
 	
+	@GET
+	@Path("rentabilidad")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getRentabilidadAdmin(@QueryParam("filtro") Integer filtro, @QueryParam("initDate") String initDate, @QueryParam("endDate") String endDate) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		
+		
+		List<Informe> rentabilidad;
+		try {
+			rentabilidad= tm.darRentabilidad(DAOTablaPedidos.ADMIN, filtro, initDate, endDate);
+			return Response.status( 200 ).entity( rentabilidad ).build( );		
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 	
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");

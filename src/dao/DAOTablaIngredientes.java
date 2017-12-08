@@ -39,7 +39,7 @@ public class DAOTablaIngredientes {
 
 	public List<Ingrediente> darIngredientesProducto(Long id) throws SQLException, Exception{
 
-		String sql = "SELECT * FROM INGREDIENTES, INGREDIENTES_PRODUCTO WHERE ID = ID_INGREDIENTE AND ID_PRODUCTO = " + id;
+		String sql = "SELECT * FROM INGREDIENTES, INGREDIENTES_PRODUCTO WHERE ID = ID_INGREDIENTE AND ID_PRODUCTO = " + id + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
 		ResultSet rs = st.executeQuery();
@@ -62,7 +62,7 @@ public class DAOTablaIngredientes {
 
 
 	private List<IngredienteBase> darIngredientesEquivalentes(Long idIngrediente) throws SQLException, Exception{
-		String sql = "SELECT * FROM INGREDIENTES, INGREDIENTESSIMILARES WHERE ID_INGREDIENTE2 = ID AND ID_INGREDIENTE1 = " + idIngrediente;
+		String sql = "SELECT * FROM INGREDIENTES, INGREDIENTESSIMILARES WHERE ID_INGREDIENTE2 = ID AND ID_INGREDIENTE1 = " + idIngrediente + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
 		ResultSet rs = st.executeQuery();

@@ -39,7 +39,7 @@ public class DAOTablaTipos {
 	public List<TipoComida> darTiposComidaProducto(Long id) throws SQLException, Exception {
 		List<TipoComida> tipos = new ArrayList<TipoComida>();
 		
-		String sql = "SELECT * FROM TIPOPRODUCTO, TIPOS WHERE ID = ID_TIPO AND ID_PROD = " + id; 
+		String sql = "SELECT * FROM TIPOPRODUCTO, TIPOS WHERE ID = ID_TIPO AND ID_PROD = " + id + " FETCH FIRST 100 ROWS ONLY"; 
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

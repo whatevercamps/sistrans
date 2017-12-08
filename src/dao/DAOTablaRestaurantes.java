@@ -38,7 +38,7 @@ public class DAOTablaRestaurantes {
 	}
 
 	public Restaurante darRestaurante(Long id) throws SQLException, Exception{
-		String sql = "SELECT * FROM RESTAURANTES WHERE ID = " + id;
+		String sql = "SELECT * FROM RESTAURANTES WHERE ID = " + id + " FETCH FIRST 100 ROWS ONLY";
 		
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
@@ -51,7 +51,7 @@ public class DAOTablaRestaurantes {
 	
 	public List<Restaurante> darRestaurantesDeZona(Long id) throws SQLException, Exception {
 		List<Restaurante> restaurantes = new ArrayList<>();
-		String sql = "SELECT * FROM RESTAURANTES  WHERE ID_ZONA = " + id;
+		String sql = "SELECT * FROM RESTAURANTES  WHERE ID_ZONA = " + id + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement st = conn.prepareStatement(sql);
 		recursos.add(st);
 		ResultSet rs = st.executeQuery();

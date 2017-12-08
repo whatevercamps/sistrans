@@ -32,6 +32,7 @@ import dao.DAOTablaZonas;
 import dao.DAOTablaOrdenes;
 import vos.Cliente;
 import vos.ClienteFrecuente;
+import vos.Informe;
 import vos.Ingrediente;
 import vos.IngredienteBase;
 import vos.Orden;
@@ -524,7 +525,7 @@ public class RotondAndesTM {
 		}
 		return pedidos; 
 	}
-	
+
 	private Pedido darPedido(Long idPedido) throws SQLException, Exception {
 		Pedido pedido; 
 		DAOTablaPedidos daoPedidos = new DAOTablaPedidos();
@@ -534,13 +535,13 @@ public class RotondAndesTM {
 
 			daoPedidos.setConn(conn);
 			pedido = daoPedidos.darPedidos(DAOTablaPedidos.PEDIDO_POR_ID, idPedido.toString()).get(0);
-				Restaurante restTemp = darRestaurante(pedido.getIdRest());
-				pedido.setNameRest(restTemp.getName());
-				String clienteName = darCliente(pedido.getIdCliente()).getNombre();
-				pedido.setNameCliente(clienteName);
-				Producto prod = darProducto(pedido.getProducto().getId(), pedido.getIdRest());
-				pedido.setProducto(prod);
-			
+			Restaurante restTemp = darRestaurante(pedido.getIdRest());
+			pedido.setNameRest(restTemp.getName());
+			String clienteName = darCliente(pedido.getIdCliente()).getNombre();
+			pedido.setNameCliente(clienteName);
+			Producto prod = darProducto(pedido.getProducto().getId(), pedido.getIdRest());
+			pedido.setProducto(prod);
+
 
 		}catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -563,7 +564,7 @@ public class RotondAndesTM {
 			}
 		}
 		return pedido; 
-		}
+	}
 
 	public List<Producto> darProductos() throws SQLException, Exception {
 		List<Producto> productos; 
@@ -838,6 +839,37 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+
+	public List<Informe> darRentabilidad(int i, int filtro, String initDate, String endDate) throws SQLException, Exception {
+		DAOTablaPedidos dao = new DAOTablaPedidos();
+		List<Informe> rentabilidad;
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);	
+			rentabilidad = dao.darRentabilidad(i, filtro, initDate, endDate);
+
+
+		}catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return rentabilidad;
 	}
 
 

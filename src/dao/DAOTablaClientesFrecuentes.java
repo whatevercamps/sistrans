@@ -58,7 +58,7 @@ public class DAOTablaClientesFrecuentes {
 
 
 	public boolean verficarCliente(Long id, String password) throws SQLException, Exception {
-		String sql = "SELECT * FROM CLIENTESFRECUENTES WHERE ID = " + id;
+		String sql = "SELECT * FROM CLIENTESFRECUENTES WHERE ID = " + id + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -75,7 +75,7 @@ public class DAOTablaClientesFrecuentes {
 		ClienteFrecuente cliente = null;
 		String sql = "SELECT * FROM CLIENTES, CLIENTESFRECUENTES";  
 		sql += " WHERE CLIENTES.ID = CLIENTESFRECUENTES.ID ";
-		sql += " AND CLIENTESFRECUENTES.ID = " + id;
+		sql += " AND CLIENTESFRECUENTES.ID = " + id + " FETCH FIRST 100 ROWS ONLY";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
