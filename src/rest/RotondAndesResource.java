@@ -97,6 +97,24 @@ public class RotondAndesResource {
 		}
 	}
 	
+	@GET
+	@Path("rentabilidad/Rotondas")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getRentabilidadRotondas(@QueryParam("filtro") Integer filtro, @QueryParam("initDate") String initDate, @QueryParam("endDate") String endDate) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		
+		
+		List<Informe> rentabilidad;
+		try {
+			rentabilidad= tm.darRentabilidadUnificada(DAOTablaPedidos.ADMIN, filtro, initDate, endDate);
+			return Response.status( 200 ).entity( rentabilidad ).build( );		
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}

@@ -1,5 +1,8 @@
 package vos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.*;
 /**
  * Clase que contiene la Rentabilidad de un Restaurante.
@@ -79,7 +82,30 @@ public class RentabilidadRestaurante
 		this.zona = zona;
 	}
 	public RentabilidadRestaurante(Informe inf) {
-		// TODO Auto-generated constructor stub
+		List<Dato> datos = new ArrayList<Dato>();
+		if(datos.get(0).getName().equalsIgnoreCase("IdZona")) {
+			Zona zonaN = new Zona();
+			zonaN.setId(Long.parseLong(datos.get(0).getValor()));
+			this.zona = zonaN;
+		}
+		if(datos.get(0).getName().equalsIgnoreCase("IdProducto")) {
+			Producto prod = new Producto();
+			prod.setId(Long.parseLong(datos.get(0).getValor()));
+			this.producto = prod;
+		}
+		if(datos.get(0).getName().equalsIgnoreCase("Categoria")) {
+			this.categoria = datos.get(0).getValor();
+		}
+		if(datos.get(0).getName().equalsIgnoreCase("IdRestaurante")) {
+			Restaurante rest = new Restaurante();
+			rest.setId(Long.parseLong(datos.get(0).getValor()));
+			this.restaurante = rest;
+		}
+		
+		this.cantidadPedidos = Integer.parseInt(datos.get(1).getValor());
+		this.ingresos = Double.parseDouble(datos.get(2).getValor());
+		this.gastos = Double.parseDouble(datos.get(3).getValor());
+		
 	}
 	/**
 	 * Método que obtiene los ingresos.

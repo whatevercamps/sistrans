@@ -1,4 +1,4 @@
-package vos;
+package vos; 
 
 import java.util.List;
 
@@ -27,8 +27,31 @@ public class Informe {
 		this.datos = datos;
 	}
 	public Informe(RentabilidadRestaurante a) {
+		this.id = 666L;
+		Dato totalProductosVendidos = new Dato("TotalProductosVendidos", ""+a.getCantidadPedidos());
+		Dato totalFacturado = new Dato("TotalFacturado", "" + a.getIngresos());
+		Dato costoTotal = new Dato("CostoTotal", "" + a.getGastos());
+		Dato tfiltro = new Dato("","");
+		if(a.getRestaurante() != null){
+			tfiltro = new Dato("IdRestaurante", "" + a.getRestaurante().getId());
+		}
+		if(a.getZona() != null){
+			tfiltro = new Dato("IdZona", a.getZona().toString());
+		}
+		if(a.getProducto() != null){
+			tfiltro = new Dato("IdProducto", a.getProducto().toString());
+		}
+		if(a.getCategoria() != null) {
+			tfiltro = new Dato("Categoria", a.getCategoria());
+		}
 		
+		this.datos.add(tfiltro);
+		this.datos.add(totalProductosVendidos);
+		this.datos.add(totalFacturado);
+		this.datos.add(costoTotal);
 	}
+	
+	
 	/**
 	 * Método que obtiene el ID del informe.
 	 * @return Long, ID del informe.
