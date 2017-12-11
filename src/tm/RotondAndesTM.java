@@ -29,16 +29,20 @@ import dao.DAOTablaProductos;
 import dao.DAOTablaRestaurantes;
 import dao.DAOTablaTipos;
 import dao.DAOTablaZonas;
+import dtm.RotondAndesDistributed;
+import jms.NonReplyException;
 import dao.DAOTablaOrdenes;
 import vos.Cliente;
 import vos.ClienteFrecuente;
 import vos.Informe;
 import vos.Ingrediente;
 import vos.IngredienteBase;
+import vos.ListaRentabilidad;
 import vos.Orden;
 import vos.Pedido;
 import vos.Producto;
 import vos.ProductoBase;
+import vos.RentabilidadRestaurante;
 import vos.Restaurante;
 import vos.TipoComida;
 import vos.Zona;
@@ -85,7 +89,10 @@ public class RotondAndesTM {
 	 * conexion a la base de datos
 	 */
 	private Connection conn;
-
+	/**
+	 * Atributo que contiene el DTM.
+	 */
+	private RotondAndesDistributed dtm;
 
 	/**
 	 * Metodo constructor de la clase RotondAndesMaster, esta clase modela y contiene cada una de las 
@@ -840,6 +847,31 @@ public class RotondAndesTM {
 			}
 		}
 	}
+
+
+	public List<Informe> darRentabilidadUnificada(int i, int filtro, String initDate, String endDate)throws SQLException, Exception {
+		List<Informe> rentFinal = new ArrayList<Informe>();
+		rentFinal.addAll(darRentabilidad(i, filtro, initDate, endDate));
+
+		try
+		{
+			String params = initDate + "," + endDate + "," + filtro + "," + "1";
+			System.out.println("PARÁMETROS A ENVIAR: " + params);
+			ListaRentabilidad resp = dtm.getRemoteRentabilidades(params);
+			for (RentabilidadRestaurante a : resp.getRentabilidades()) {
+				Informe convertido =  new Informe(a);
+				rentFinal.add(convertido);
+			}
+	
+		}
+		catch(NonReplyException e)
+		{
+			System.err.println("ConexionExternaException:" + e.getMessage());
+		}
+		return null;
+	}
+
+
 
 	public List<Informe> darRentabilidad(int i, int filtro, String initDate, String endDate) throws SQLException, Exception {
 		DAOTablaPedidos dao = new DAOTablaPedidos();

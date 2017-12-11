@@ -26,6 +26,9 @@ public class Informe {
 		this.id = id;
 		this.datos = datos;
 	}
+	public Informe(RentabilidadRestaurante a) {
+		
+	}
 	/**
 	 * Método que obtiene el ID del informe.
 	 * @return Long, ID del informe.
