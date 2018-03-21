@@ -31,7 +31,7 @@ import jms.NonReplyException;
 import jms.RentabilidadRestaurantesMDB;
 //import jms.RetirarRestauranteMDB;
 //import jms.TodosLosProductosMDB;
-import tm.RotondAndesTM;
+import tm.AlohAndesTM;
 import vos.Informe;
 import vos.ListaRentabilidad;
 import vos.Pedido;
@@ -46,7 +46,7 @@ public class RotondAndesDistributed {
 	
 	private static RotondAndesDistributed instance;
 	
-	private RotondAndesTM tm;
+	private AlohAndesTM tm;
 	
 	private QueueConnectionFactory queueFactory;
 	
@@ -97,7 +97,7 @@ public class RotondAndesDistributed {
 		path = p;
 	}
 	
-	public void setUpTransactionManager(RotondAndesTM tm)
+	public void setUpTransactionManager(AlohAndesTM tm)
 	{
 	   this.tm = tm;
 	}
@@ -107,7 +107,7 @@ public class RotondAndesDistributed {
 		return instance;
 	}
 	
-	public static RotondAndesDistributed getInstance(RotondAndesTM tm)
+	public static RotondAndesDistributed getInstance(AlohAndesTM tm)
 	{
 		if(instance == null)
 		{
@@ -128,14 +128,14 @@ public class RotondAndesDistributed {
 	{
 		if(instance == null)
 		{
-			RotondAndesTM tm = new RotondAndesTM(path);
+			AlohAndesTM tm = new AlohAndesTM(path);
 			return getInstance(tm);
 		}
 		if(instance.tm != null)
 		{
 			return instance;
 		}
-		RotondAndesTM tm = new RotondAndesTM(path);
+		AlohAndesTM tm = new AlohAndesTM(path);
 		return getInstance(tm);
 	}
 	/**

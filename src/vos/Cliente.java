@@ -24,7 +24,7 @@ public class Cliente {
 	 * Codigo que reoresenta a un cliente
 	 */
 	@JsonProperty(value="Codigo")
-	protected String Codigo;
+	protected Long Codigo;
 	/**
 	 * Nmbre de un cliente
 	 */
@@ -39,7 +39,7 @@ public class Cliente {
 	 * Define la relacion con la entidad tiene que ser alguno de los siguientes:Estudiante; Egresado, Empleado,Profesores,PadresDeEstudiante,ProfesoresInvitados
 	 */
 	@JsonProperty(value="Tipo")
-	protected int Tipo;
+	protected Integer Tipo;
 	/**
 	 * Relacion que permite a un cliente acceder a una propuesta
 	 */
@@ -48,7 +48,7 @@ public class Cliente {
 
 	///Metodo constructor 
 
-	public Cliente(@JsonProperty(value="Codigo")String codigo,@JsonProperty(value="Nombre")String nombre,@JsonProperty(value="Appellido")String apellido,@JsonProperty(value="Tipo")int tipo,@JsonProperty(value="Contrato") Reserva reserva)
+	public Cliente(@JsonProperty(value="Codigo")Long codigo,@JsonProperty(value="Nombre")String nombre,@JsonProperty(value="Appellido")String apellido,@JsonProperty(value="Tipo")int tipo,@JsonProperty(value="Contrato") Reserva reserva)
 	{
 		this.Codigo=codigo;
 		this.Nombre=nombre;
@@ -68,21 +68,21 @@ public class Cliente {
 	 * 
 	 * @return codigo de el cliente
 	 */
-	private String getCodigo() {
+	public Long getCodigo() {
 		return this.Codigo;
 	}
 	/**
 	 * 
 	 * @return nombre de el cliente
 	 */
-	private String getNombre() {
+	public String getNombre() {
 		return this.Nombre;
 	}
 	/**
 	 * 
 	 * @return apellido del cliente
 	 */
-	private String getApellido() {
+	public String getApellido() {
 		return this.Apellido;
 	}
 	/**
@@ -90,7 +90,7 @@ public class Cliente {
 	 * @return tipo de relacion con la insitucion
 	 */
 
-	private int getTipo() {
+	public int getTipo() {
 		return this.Tipo;
 	}
 	/**
@@ -105,21 +105,21 @@ public class Cliente {
 	 * 
 	 * @param myCodigo de identificacion 
 	 */
-	private void setCodigo(String myCodigo) {
+	public void setCodigo(Long myCodigo) {
 		this.Codigo = myCodigo;
 	}
 	/**
 	 * 
 	 * @param myNombre del cliente
 	 */
-	private void setNombre(String myNombre) {
+	public void setNombre(String myNombre) {
 		this.Nombre = myNombre;
 	}
 	/**
 	 * 
 	 * @param myApellido apellido del cliente
 	 */
-	private void setApellido(String myApellido) {
+	public void setApellido(String myApellido) {
 		this.Apellido = myApellido;
 	}
 
@@ -127,7 +127,7 @@ public class Cliente {
 	 * 
 	 * @param myTipo tipo de relacion con la  institucion
 	 */
-	private void setTipo(int myTipo) {
+	public void setTipo(int myTipo) {
 		this.Tipo = myTipo;
 	}
 

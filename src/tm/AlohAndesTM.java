@@ -52,7 +52,7 @@ import vos.Zona;
  * Fachada en patron singleton de la aplicacion
  * @author David Bautista
  */
-public class RotondAndesTM {
+public class AlohAndesTM {
 
 
 	/**
@@ -101,7 +101,7 @@ public class RotondAndesTM {
 	 * inicializa los atributos que se usan par la conexion a la base de datos.
 	 * @param contextPathP - path absoluto en el servidor del contexto del deploy actual
 	 */
-	public RotondAndesTM(String contextPathP) {
+	public AlohAndesTM(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
 		initConnectionData();
 	}
@@ -862,7 +862,7 @@ public class RotondAndesTM {
 				Informe convertido =  new Informe(a);
 				rentFinal.add(convertido);
 			}
-	
+
 		}
 		catch(NonReplyException e)
 		{
@@ -902,6 +902,85 @@ public class RotondAndesTM {
 			}
 		}
 		return rentabilidad;
+	}
+
+	public Cliente buscarClientePorId(Long id) throws SQLException, Exception{
+		DAOTablaClientes dao = new DAOTablaClientes();
+		Cliente ret = null;
+		try {
+			this.conn = darConexion();
+			dao.setConn(conn);
+			ret = dao.darCliente(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return ret;
+	}
+
+	public Cliente crearCliente(Cliente cliente) throws SQLException, Exception{
+
+		DAOTablaClientes dao = new DAOTablaClientes();
+		Cliente ret = null;
+		try {
+			
+			//verificar reglas de negocio
+			if (buscarClientePorId(cliente.getCodigo()) == null) {
+				throw new Exception("Ya hay un cliente con ese código");
+			}
+			
+			this.conn = darConexion();
+			dao.setConn(conn);
+			
+			dao.crearCliente(cliente);
+			
+			//verificar 
+			
+			ret = buscarClientePorId(cliente.getCodigo());
+			
+			if(ret == null) {
+				throw new Exception("No se guardó correctamente el cliente, revisar xd...");
+			}
+
+			
+
+
+		}  catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return ret;
 	}
 
 

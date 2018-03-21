@@ -2,14 +2,14 @@ package vos;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-
+import java.time.LocalDateTime;
 public class Hostal extends Operadores
 {
 	
 	@JsonProperty(value="HoraApertura")
-	protected String HoraApertura;	
+	protected LocalDateTime HoraApertura;	
 	@JsonProperty(value="HoraClausura")
-	protected String HoraClausura;
+	protected LocalDateTime HoraClausura;
 
 
 	public Hostal(@JsonProperty(value="Nombre")String nombre,
@@ -17,8 +17,8 @@ public class Hostal extends Operadores
 			@JsonProperty(value="MinDeTiempo") double minTiempo,
 			@JsonProperty(value="Capacidad")double capacidad
 			,@JsonProperty(value="id") Long id,
-			@JsonProperty(value="HoraApertura") String horaA,
-			@JsonProperty(value="HoraClausura") String horaC)
+			@JsonProperty(value="HoraApertura") LocalDateTime horaA,
+			@JsonProperty(value="HoraClausura") LocalDateTime horaC)
 	{
 		super(nombre,tipo,minTiempo,capacidad,id);
 		this.HoraApertura=horaA;
@@ -27,12 +27,12 @@ public class Hostal extends Operadores
 	}
 
 
-	private String getHoraApertura() {
+	private LocalDateTime getHoraApertura() {
 		return this.HoraApertura;
 	}
 
 
-	private String getHoraClausura() {
+	private LocalDateTime getHoraClausura() {
 		return this.HoraClausura;
 	}
 

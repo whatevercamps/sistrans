@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import tm.RotondAndesTM;
+import tm.AlohAndesTM;
 import vos.Pedido;
 import vos.Producto;
 import vos.Restaurante;
@@ -48,7 +48,7 @@ public class RestauranteResource {
 	@Path("{idRest: \\d+}/productos/{idProd: \\d+}")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getProducto(@PathParam("idRest") Long idRest, @PathParam("idProd") Long idProd) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {
 			Producto producto = tm.darProducto(idProd, idRest);
 			System.out.println("FINAL ingredientes: " + producto.getIngredientes().size());
@@ -65,7 +65,7 @@ public class RestauranteResource {
 	@Path("{id: \\d+}/pedidos/{idPedido: \\d+}")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response despacharPedido(@PathParam("id") Long idRest, @PathParam("idPedido") Long idPed) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {	 
 			tm.despacharPedido(idPed);
 			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	
@@ -80,7 +80,7 @@ public class RestauranteResource {
 	@Consumes( { MediaType.APPLICATION_JSON } )
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response despacharPedidosMesa(@PathParam("id") Long idRest, @QueryParam("idMesa") Long idMesa) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {	
 			tm.despacharPedidosMesa(idMesa, idRest);
 			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedidos despachado \"}" ).build();	
@@ -96,7 +96,7 @@ public class RestauranteResource {
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response CancelarPedido(@PathParam("idPedido")Long idPed) 
 	{
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {	 
 			tm.cancelarPedido(idPed);
 			return Response.status( 200 ).entity( "{ \"RESPUESTA\": \" Pedido despachado \"}" ).build();	

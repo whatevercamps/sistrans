@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import dao.DAOTablaPedidos;
-import tm.RotondAndesTM;
+import tm.AlohAndesTM;
 import vos.Cliente;
 import vos.Informe;
 import vos.Producto;
@@ -40,7 +40,7 @@ public class RotondAndesResource {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getProductosPor(@QueryParam("filtro") Integer ident, @QueryParam("parametro") String parametro) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		List<Producto> productos;
 		try {
 			productos = tm.darProductosPor(ident, parametro);
@@ -55,7 +55,7 @@ public class RotondAndesResource {
 	@Path("clientes")
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getClientes() {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		List<Cliente> clientes;
 		try {
 			clientes = tm.darClientes();
@@ -70,7 +70,7 @@ public class RotondAndesResource {
 	@Path("clientes/{id: \\d+}")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getCliente(@PathParam("id") Long id) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {
 			Cliente cliente = tm.darCliente(id);
 			return Response.status( 200 ).entity( cliente ).build( );		
@@ -84,7 +84,7 @@ public class RotondAndesResource {
 	@Path("rentabilidad")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getRentabilidadAdmin(@QueryParam("filtro") Integer filtro, @QueryParam("initDate") String initDate, @QueryParam("endDate") String endDate) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		
 		
 		List<Informe> rentabilidad;
@@ -101,7 +101,7 @@ public class RotondAndesResource {
 	@Path("rentabilidad/Rotondas")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getRentabilidadRotondas(@QueryParam("filtro") Integer filtro, @QueryParam("initDate") String initDate, @QueryParam("endDate") String endDate) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		
 		
 		List<Informe> rentabilidad;

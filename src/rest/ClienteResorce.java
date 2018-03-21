@@ -17,11 +17,9 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import tm.RotondAndesTM;
+import tm.AlohAndesTM;
 import vos.Cliente;
-import vos.Pedido;
-import vos.Producto;
-import vos.Restaurante;
+
 
 
 
@@ -30,7 +28,7 @@ import vos.Restaurante;
  * @author David Bautista
  */
 
-@Path("cliente")
+@Path("clientes")
 public class ClienteResorce {
 
 	@XmlRootElement
@@ -49,13 +47,30 @@ public class ClienteResorce {
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON } )
+	@Produces({ MediaType.APPLICATION_JSON } )
+	public Response crearCliente( Cliente cliente) throws SQLException, Exception{
+		System.out.println("entreeeeee");
+		AlohAndesTM tm = new AlohAndesTM(getPath());
+		
+		try {
+			Cliente clienteNew = tm.crearCliente(cliente);
+
+			return Response.status( 200 ).entity( clienteNew ).build();	
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 
 
 	@POST
 	@Path("{id: \\d+}/pedido")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response agregarPedido(@PathParam("id") Long id, @QueryParam("idProd") Long idProd, @QueryParam("idRest") Long idRestProd) throws SQLException, Exception {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 
 		Restaurante res = tm.darRestaurante(idRestProd);
 		if(res == null) {
@@ -88,7 +103,7 @@ public class ClienteResorce {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces( MediaType.APPLICATION_JSON )
 	public Response agregarPedidos(@PathParam("id") Long id, RequestBody request) throws SQLException, Exception {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 
 		try {
 			List<Pedido> pedidosMesa = tm.agregarPedidosMesa(id, request.idsPedidos);

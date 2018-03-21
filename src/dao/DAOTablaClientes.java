@@ -65,22 +65,34 @@ public class DAOTablaClientes {
 	public Cliente darCliente(Long id) throws SQLException {
 		Cliente clientePorId = null;
 
-		String sqlClientePorId = "SELECT * FROM CLIENTES WHERE ID = " + id + " FETCH FIRST 100 ROWS ONLY"; 
+		String sqlClientePorId = "SELECT * FROM CLIENTES WHERE ID = " + id + " FETCH FIRST 1 ROWS ONLY"; 
 		PreparedStatement stClientePorId = conn.prepareStatement(sqlClientePorId);
 		recursos.add(stClientePorId);
 		ResultSet rsClientePorId = stClientePorId.executeQuery();
 
 		if (rsClientePorId.next()) {
 			Long id2 = rsClientePorId.getLong("ID");
-			String nameclientePorId = rsClientePorId.getString("NAME");
-			Integer mesaClientePorId = rsClientePorId.getInt("MESA");
-			clientePorId = new Cliente();
-			clientePorId.setId(id2);
-			clientePorId.setNombre(nameclientePorId);
-			clientePorId.setMesa(mesaClientePorId);
+			String nombreClientePorId = rsClientePorId.getString("NOMBRE");
+			String apellidoClientePorId = rsClientePorId.getString("APELLIDO");
+			Integer tipo = rsClientePorId.getInt("TIPO");
+			clientePorId = new Cliente(id2, nombreClientePorId, apellidoClientePorId, tipo, null);
+
 		}
 
 		return clientePorId;
+	}
+
+
+	public void crearCliente(Cliente cliente) throws SQLException, Exception {
+		
+		String sql = String.format("INSERT INTO CLIENTES(ID, NOMBRE, APELLIDO, AFILIACION) VALUES (%1$s, %2$s, %3$s, %4$s)",
+														cliente.getCodigo(),
+														cliente.getNombre(),
+														cliente.getApellido(),
+														cliente.getTipo());
+		System.out.println(sql);
+		PreparedStatement st = conn.prepareStatement(sql);
+		st.executeQuery();
 	}
 
 }

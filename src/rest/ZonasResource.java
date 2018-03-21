@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import rest.ClienteResorce.RequestBody;
-import tm.RotondAndesTM;
+import tm.AlohAndesTM;
 import vos.Zona;
 import vos.Pedido;
 import vos.Producto;
@@ -57,7 +57,7 @@ public class ZonasResource
 	@Path("{idZona: \\d+}")
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getZona(@PathParam("idZona") Long idZona) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {
 			Zona zona = tm.darZona(idZona);
 			return Response.status( 200 ).entity( zona ).build( );		
@@ -71,7 +71,7 @@ public class ZonasResource
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response agregarZona(Zona zona) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
+		AlohAndesTM tm = new AlohAndesTM(getPath());
 		try {
 			
 			Zona res = tm.agregarZona(zona);
