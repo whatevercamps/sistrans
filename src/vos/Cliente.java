@@ -1,127 +1,147 @@
-/**-------------------------------------------------------------------
- * $Id$
- * Universidad de los Andes (Bogot√° - Colombia)
- * Departamento de Ingenier√≠a de Sistemas y Computaci√≥n
- *
- * Materia: Sistemas Transaccionales
- * Ejercicio: RotondAndes
- * Autor: Juan Carlos Corrales - jc.corrales@uniandes.edu.co
- * -------------------------------------------------------------------
- */
 package vos;
+import javax.*;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+/**
+ * 
+ * Clase que representa a un cliente 
+ *
+ */
 
-import java.util.List;
-
-import org.codehaus.jackson.annotate.*;
-
-public class Cliente
-{
-	/**
-	 * Id del Cliente.
-	 */
-	@JsonProperty(value="id")
-	private Long id;
-	/**
-	 * Mesa asignada del cliente;
-	 */
-	@JsonProperty(value = "mesa")
-	private Integer mesa;
-	/**
-	 * Nombre del cliente.
-	 */
-	@JsonProperty(value = "nombre")
-	private String nombre;
-
-	@JsonProperty(value = "ordenes")
-	private List<Orden> ordenes;
+import com.sun.istack.internal.FinalArrayList;
+public class Cliente {
 	
 	
-	public Cliente() {
-		
+	//Constantes de tipo
+	private static int ESTUDIANTE=1;
+	private static int EGRESADO=2;
+	private static int PROFESOR=3;
+	private static int EMPLEADO=4;
+	private static int PADRE_DE_ESTUDIANTE=5;
+	private static int PROFESOR_INVITADO=6;
+	//Atributos de la entidad
+	/**
+	 * Codigo que reoresenta a un cliente
+	 */
+	@JsonProperty(value="Codigo")
+	protected String Codigo;
+	/**
+	 * Nmbre de un cliente
+	 */
+	@JsonProperty(value="Nombre")
+	protected String Nombre;
+	/**
+	 * Apellido de un cliente
+	 */	
+	@JsonProperty(value="Apelllido")
+	protected String Apellido;
+	/**
+	 * Define la relacion con la entidad tiene que ser alguno de los siguientes:Estudiante; Egresado, Empleado,Profesores,PadresDeEstudiante,ProfesoresInvitados
+	 */
+	@JsonProperty(value="Tipo")
+	protected int Tipo;
+	/**
+	 * Relacion que permite a un cliente acceder a una propuesta
+	 */
+	@JsonProperty(value="Contrato")
+	protected Reserva Contrato;
+
+	///Metodo constructor 
+
+	public Cliente(@JsonProperty(value="Codigo")String codigo,@JsonProperty(value="Nombre")String nombre,@JsonProperty(value="Appellido")String apellido,@JsonProperty(value="Tipo")int tipo,@JsonProperty(value="Contrato") Reserva reserva)
+	{
+		this.Codigo=codigo;
+		this.Nombre=nombre;
+		this.Apellido=apellido;	
+		if(tipo==ESTUDIANTE||tipo==EGRESADO||tipo==PADRE_DE_ESTUDIANTE
+		   ||tipo==EMPLEADO||tipo==PROFESOR||tipo==PROFESOR_INVITADO)
+		{
+			this.Tipo=tipo;
+		}
+		if(Contrato!=null)
+		{	
+			this.Contrato=reserva;
+		}
+	}
+	//Metodos getter y setter
+	/**
+	 * 
+	 * @return codigo de el cliente
+	 */
+	private String getCodigo() {
+		return this.Codigo;
 	}
 	/**
-	 * MÈtodo constructor de la clase ClienteVos.
-	 * @param id
-	 * @param mesa
-	 * @param nombre
+	 * 
+	 * @return nombre de el cliente
 	 */
-	public Cliente(@JsonProperty(value="id")Long id, 
-			@JsonProperty(value = "mesa")Integer mesa, 
-			@JsonProperty(value = "nombre")String nombre,
-			@JsonProperty(value = "ordenes") List<Orden> ordenes)
-	{
-		this.id = id;
-		this.mesa = mesa;
-		this.nombre = nombre;
-		this.ordenes = ordenes;
+	private String getNombre() {
+		return this.Nombre;
 	}
 	/**
-	 * MÈtodo que obtiene el ID de este cliente-
-	 * @return Long, ID del cliente.
+	 * 
+	 * @return apellido del cliente
 	 */
-	public Long getId()
-	{
-		return this.id;
+	private String getApellido() {
+		return this.Apellido;
 	}
 	/**
-	 * MÈtodo que establece la ID de este cliente.
-	 * @param id Long, ID del cliente.
+	 * 
+	 * @return tipo de relacion con la insitucion
 	 */
-	public void setId(Long id)
-	{
-		this.id = id;
+
+	private int getTipo() {
+		return this.Tipo;
 	}
 	/**
-	 * MÈtodo que obtiene la mesa asignada a este cliente.
-	 * @return String, mesa del cliente.
+	 * 
+	 * @return contrato de un cliente
 	 */
-	public Integer getMesa()
-	{
-		return this.mesa;
-	}
-	/**
-	 * MÈtodo que establece la mesa de este cliente.
-	 * @param mesa
-	 */
-	public void setMesa(Integer mesa)
-	{
-		this.mesa = mesa;
-	}
-	/**
-	 * MÈtodo que obtiene el nombre de este cliente.
-	 * @return String, nombre del cliente.
-	 */
-	public String getNombre()
-	{
-		return this.nombre;
-	}
-	/**
-	 * MÈtodo que establece el nombre de este cliente.
-	 * @param nombre String, nuevo nombre del cliente.
-	 */
-	public void setNombre(String nombre)
-	{
-		this.nombre = nombre;
-	}
-	
-	/**
-	 * MÈtodo que obtiene el nombre de este cliente.
-	 * @return String, nombre del cliente.
-	 */
-	public List<Orden> getOrdenes()
-	{
-		return this.ordenes;
+	public Reserva getContrato() {
+		return this.Contrato;
 	}
 	
 	/**
-	 * MÈtodo que establece el nombre de este cliente.
-	 * @param nombre String, nuevo nombre del cliente.
+	 * 
+	 * @param myCodigo de identificacion 
 	 */
-	public void setOrdenes(List<Orden> ordenes)
-	{
-		this.ordenes = ordenes;
+	private void setCodigo(String myCodigo) {
+		this.Codigo = myCodigo;
 	}
+	/**
+	 * 
+	 * @param myNombre del cliente
+	 */
+	private void setNombre(String myNombre) {
+		this.Nombre = myNombre;
+	}
+	/**
+	 * 
+	 * @param myApellido apellido del cliente
+	 */
+	private void setApellido(String myApellido) {
+		this.Apellido = myApellido;
+	}
+
+	/**
+	 * 
+	 * @param myTipo tipo de relacion con la  institucion
+	 */
+	private void setTipo(int myTipo) {
+		this.Tipo = myTipo;
+	}
+
+	/**
+	 * 
+	 * @param myContrato contrato nuevo 
+	 */
+	public void setContrato(Reserva myContrato) {
+		this.Contrato = myContrato;
+	}
+
 
 
 }
+
+
+
